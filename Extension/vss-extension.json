@@ -1,0 +1,62 @@
+{
+    "manifestVersion": 1,
+    "id": "gl-vsts-tasks-yarn",
+    "name": "Yarn",
+    "version": "0.0.0",
+    "publisher": "geeklearningio",    
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],    
+    "description": "Harness Yarn power and make your build faster and more robust",
+    "categories": [
+        "Build and release"
+    ],
+    "icons": {
+        "default": "extension-icon.png"        
+    },
+    "tags": [
+        "json",
+        "xml",
+        "yaml",
+        "patch",
+        "utility",
+        "file"
+    ],
+    "content": {
+        "details": {
+            "path": "overview.md"
+        },
+        "license": {
+            "path": "LICENSE.txt"
+        }
+    },
+    "links": {
+        "getstarted": {
+            "uri": "https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki"
+        },
+        "support": {
+            "uri": "https://github.com/geeklearningio/gl-vsts-tasks-yarn/issues"
+        },
+        "repository": {
+            "uri": "https://github.com/geeklearningio/gl-vsts-tasks-yarn"
+        },
+        "issues": {
+            "uri": "https://github.com/geeklearningio/gl-vsts-tasks-yarn/issues"
+        }
+    },
+    "branding": {
+        "color": "#008B8B",
+        "theme": "dark"
+    },  
+    "files": [
+        {
+            "path": "Tasks"
+        },
+        {
+            "path": "Screenshots",
+            "addressable": true
+        }
+    ]
+}

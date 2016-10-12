@@ -1,0 +1,39 @@
+{
+    "id": "57066373-3f34-492b-941a-d66dd6b079c4",
+    "name": "Yarn",
+    "friendlyName": "Yarn task",
+    "description": "Executes Yarn",
+    "helpMarkDown": "[More Information](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn) (Version #{Version}#)",    
+    "category": "Utility",
+    "visibility": [
+        "Build",
+        "Release"
+    ],
+    "author": "Geek Learning",
+    "version": {
+        "Major": 0,
+        "Minor": 0,
+        "Patch": 0
+    },
+    "demands": [
+        "npm"
+    ],
+    "minimumAgentVersion": "1.91.0",
+    "instanceNameFormat": "Yarn $(Arguments)",
+    "inputs": [
+        {
+            "name": "Arguments",
+            "type": "string",
+            "label": "arguments",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Additionals arguments"
+        }
+    ],
+    "execution": {
+        "Node": {
+            "target": "yarnTask.js",
+            "argumentFormat": ""
+        }
+    }
+}

@@ -1,0 +1,6 @@
+mode: ContinuousDeployment
+branches: 
+  dev(elop)?(ment)?$:
+    tag: alpha
+  features?[/-]:
+    tag: alpha.{BranchName}

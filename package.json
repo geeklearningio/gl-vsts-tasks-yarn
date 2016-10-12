@@ -1,0 +1,42 @@
+{
+  "name": "gl-vsts-tasks-yarn",
+  "version": "0.1.0",
+  "description": "Yarn task for the Team Services build system",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "clean" : "node ./BuildScripts/clean.js",
+    "pullsubmodules": "git submodule foreach git pull origin master",
+    "postinstall": "node ./BuildScripts/install.js",
+    "prebuild": "node ./BuildScripts/prebuild.js",
+    "build": "tsc",
+    "package": "node BuildScripts/package.js",
+    "build:test": "run-s build test",
+    "test": "jasmine JASMINE_CONFIG_PATH=./Tests/jasmine.json",
+    "test:chutzpah": "chutzpah.console ./Tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/geeklearningio/gl-vsts-tasks-yarn"
+  },
+  "keywords": [
+    "yarn",
+    "node",
+    "node.js",
+    "npm",
+    "npm.js",
+    "install"
+  ],
+  "author": "Geek Learning, Adrien Siffermann, Cyprien Autexier",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/geeklearningio/gl-vsts-tasks-yarn/issues"
+  },
+  "homepage": "https://github.com/geeklearningio/gl-vsts-tasks-yarn/vsts-tasks",
+  "devDependencies": {
+    "async": "2.0.1",
+    "karma": "^1.1.2",
+    "npm-run-all": "2.3.0"
+  }
+}
