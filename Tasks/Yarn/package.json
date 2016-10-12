@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "dependencies": {
     "fs-extra": "0.30.0",
-    "vsts-task-lib": "0.9.6"
+    "vsts-task-lib": "0.9.6",
+    "yog-tar.gz": "0.1.3"
   }
 }

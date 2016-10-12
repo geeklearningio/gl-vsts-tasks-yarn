@@ -1,14 +1,39 @@
 import path = require('path');
 import fs = require('fs-extra');
 import tl = require('vsts-task-lib/task');
+import q = require('q');
+
+var targz = require('tar.gz');
 
 var yarnPath = tl.which("yarn"); //path.join(__dirname, 'node_modules/.bin/yarn')
 var args = tl.getInput("Arguments");
 var projectPath = tl.getPathInput("ProjectDirectory")
 
+function detar(source: string, dest: string): q.Promise<any> {
+    var deferral = q.defer<any>();
+
+    new targz().extract(source, dest, (err: any) => {
+        if (err) {
+            deferral.reject(err);
+        } else {
+            deferral.resolve();
+        }
+    });
+
+    return deferral.promise;
+}
+
 async function yarnExec() {
     try {
+
+        if (!yarnPath) {
+            var yarnDest = path.join(tl.getVariable("AGENT_WORKFOLDER"), 'yarn');
+            await detar(path.join(__dirname, 'yarn-v0.15.0.tar.gz'), yarnDest);
+            yarnPath = path.join(yarnDest, 'dist/bin/yarn');
+        }
+
         var yarn = tl.tool(yarnPath);
+        
         yarn.arg(args);
 
         var result = await yarn.exec({
