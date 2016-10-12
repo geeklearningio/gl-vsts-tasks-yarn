@@ -21,6 +21,14 @@
     "minimumAgentVersion": "1.91.0",
     "instanceNameFormat": "Yarn $(Arguments)",
     "inputs": [
+         {
+            "name": "ProjectDirectory",
+            "type": "filePath",
+            "label": "Project Directory",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Source directory"
+        },
         {
             "name": "Arguments",
             "type": "string",
@@ -28,14 +36,6 @@
             "defaultValue": "",
             "required": false,
             "helpMarkDown": "Additionals arguments"
-        },
-        {
-            "name": "ProjectDirectory",
-            "type": "filePath",
-            "label": "Project Directory",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "Source directory"
         }
     ],
     "execution": {
