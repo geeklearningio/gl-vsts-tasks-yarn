@@ -4,7 +4,7 @@ import tl = require('vsts-task-lib/task');
 
 var yarnPath = "yarn"; //path.join(__dirname, 'node_modules/.bin/yarn')
 var args = tl.getInput("Arguments");
-var path = tl.getPathInput("ProjectDirectory")
+var projectPath = tl.getPathInput("ProjectDirectory")
 
 async function yarnExec() {
     try {
@@ -12,7 +12,7 @@ async function yarnExec() {
         yarn.arg(args);
 
         var result = await yarn.exec({
-            cwd: path,
+            cwd: projectPath,
             env: <any>process.env,
             silent: false,
             failOnStdErr: undefined,
