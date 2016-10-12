@@ -4,7 +4,6 @@
   "version": "0.1.0",
   "dependencies": {
     "fs-extra": "0.30.0",
-    "vsts-task-lib": "0.9.6",
-    "yarn" : "0.15.1"
+    "vsts-task-lib": "0.9.6"
   }
 }
