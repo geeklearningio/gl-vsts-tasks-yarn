@@ -3,7 +3,7 @@ import fs = require('fs-extra');
 import tl = require('vsts-task-lib/task');
 import q = require('q');
 
-var targz = require('tar.gz');
+var targz = require('yog-tar.gz');
 
 var yarnPath = tl.which("yarn"); //path.join(__dirname, 'node_modules/.bin/yarn')
 var args = tl.getInput("Arguments");
