@@ -3,7 +3,7 @@
     "name": "Yarn",
     "friendlyName": "Yarn task",
     "description": "Executes Yarn",
-    "helpMarkDown": "[More Information](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn) (Version #{Version}#)",    
+    "helpMarkDown": "[More Information](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn) (Version #{Version}#)",
     "category": "Utility",
     "visibility": [
         "Build",
@@ -24,10 +24,18 @@
         {
             "name": "Arguments",
             "type": "string",
-            "label": "arguments",
+            "label": "Arguments",
             "defaultValue": "",
             "required": false,
             "helpMarkDown": "Additionals arguments"
+        },
+        {
+            "name": "ProjectDirectory",
+            "type": "filePath",
+            "label": "Project Directory",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Source directory"
         }
     ],
     "execution": {
