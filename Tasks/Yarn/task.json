@@ -20,8 +20,15 @@
     ],
     "minimumAgentVersion": "1.91.0",
     "instanceNameFormat": "Yarn $(Arguments)",
+    "groups": [
+        {
+            "name": "install",
+            "displayName": "Install Options",
+            "isExpanded": false
+        }
+    ],
     "inputs": [
-         {
+        {
             "name": "ProjectDirectory",
             "type": "filePath",
             "label": "Project Directory",
@@ -36,6 +43,14 @@
             "defaultValue": "",
             "required": false,
             "helpMarkDown": "Additionals arguments"
+        },
+        {
+            "name": "ProductionMode",
+            "type": "boolean",
+            "label": "Production Install",
+            "defaultValue": false,
+            "required": false,
+            "helpMarkDown": "appends --production argument"
         }
     ],
     "execution": {

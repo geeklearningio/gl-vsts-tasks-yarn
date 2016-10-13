@@ -37,7 +37,11 @@ async function yarnExec() {
         tl.debug(yarnPath);
 
         var yarn = tl.tool(yarnPath);
-        
+
+        if (tl.getBoolInput('ProductionMode')) {
+            yarn.arg('--production');
+        }
+
         yarn.arg(args);
 
         var result = await yarn.exec({
