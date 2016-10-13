@@ -3,7 +3,10 @@
         {
             "Name": "production",
             "VssExtensionIdSuffix": "",
-            "VssExtensionGalleryFlags": ["Preview"],
+            "VssExtensionGalleryFlags": [
+                "Public",
+                "Preview"
+            ],
             "DisplayNamesSuffix": "",
             "TaskIds": {
                 "Yarn": "0888c9a9-d1b2-4567-aae2-beadcb2059b3"
