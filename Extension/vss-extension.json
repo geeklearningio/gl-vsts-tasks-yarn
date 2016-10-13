@@ -17,12 +17,11 @@
         "default": "extension-icon.png"        
     },
     "tags": [
-        "json",
-        "xml",
-        "yaml",
-        "patch",
-        "utility",
-        "file"
+        "yarn",
+        "node",
+        "npm",
+        "package",
+        "utility"
     ],
     "content": {
         "details": {
