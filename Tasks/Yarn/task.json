@@ -50,6 +50,7 @@
             "label": "Production Install",
             "defaultValue": false,
             "required": false,
+            "groupName": "install",
             "helpMarkDown": "appends --production argument"
         }
     ],
