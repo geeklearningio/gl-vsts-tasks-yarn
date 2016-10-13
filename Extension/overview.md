@@ -3,11 +3,15 @@
 [Yarn](https://yarnpkg.com/) is Facebook's npm alternative. It is the fast, reliable and secure dependency management. 
 This extension brings the power of Yarn to Visual Studio Team Services Build and Release Management.
 
+![GeekLearning Loves Yarn](Screenshots/GeekLearningLovesYarn.png)
+
+Why so much sudden love for Yarn ? You can find out [here](http://geeklearning.io/npm-install-drives-you-crazy-yarn-and-chill) 
+
 [Learn more](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki) about this extension on the wiki!
 
 ## Tasks included
 
-* **[Yarn](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn)**: Patch JSON files using JSON patch syntax
+* **[Yarn](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn)**: Execute Yarn (Yarn is bundled for Hosted Agents)
 
 ## Steps
 
