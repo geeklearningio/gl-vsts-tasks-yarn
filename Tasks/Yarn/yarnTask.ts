@@ -28,7 +28,7 @@ async function yarnExec() {
 
         if (!yarnPath) {
             var yarnDest = path.join(tl.getVariable("AGENT_WORKFOLDER"), 'yarn');
-            await detar(path.join(__dirname, 'yarn-v0.16.0.tar.gz'), yarnDest);
+            await detar(path.join(__dirname, 'yarn-latest.tar.gz'), yarnDest);
             yarnPath = path.join(yarnDest, 'dist/bin/yarn' + (process.platform === 'win32' ? '.cmd' : ''));
             tl.debug(yarnDest);
             tl.debug(JSON.stringify(fs.readdirSync(yarnDest)));
