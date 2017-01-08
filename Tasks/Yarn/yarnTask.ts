@@ -42,7 +42,7 @@ async function yarnExec() {
             yarn.arg('--production');
         }
 
-        yarn.arg(args);
+        yarn.line(args);
 
         var result = await yarn.exec({
             cwd: projectPath,
