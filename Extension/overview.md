@@ -25,6 +25,10 @@ The [source](https://github.com/geeklearningio/gl-vsts-tasks-yarn) for this exte
 
 ## Release Notes
 
+> [**08-01-2017**](https://github.com/geeklearningio/gl-vsts-tasks-yarn/releases/tag/0.3.0)
+> - Fix a bug preventing additional arguments from working properly.
+> - Bundled Yarn version update to [0.18.1](https://github.com/yarnpkg/yarn/releases/tag/v0.18.1) (only impacts agents without yarn preinstalled)
+
 > **06-12-2016**
 > - Bundled Yarn version update to [0.18.0](https://github.com/yarnpkg/yarn/releases/tag/v0.18.0) (only impacts agents without yarn preinstalled)
 
