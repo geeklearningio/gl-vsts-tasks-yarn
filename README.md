@@ -33,4 +33,4 @@ This extension was created by [Geek Learning](http://geeklearning.io/), with hel
 
 ## Attributions
 
-* [Yarn by Yarn]](https://yarnpkg.com/)
+* [Yarn by Yarn](https://yarnpkg.com/)
