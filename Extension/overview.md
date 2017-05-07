@@ -25,6 +25,9 @@ The [source](https://github.com/geeklearningio/gl-vsts-tasks-yarn) for this exte
 
 ## Release Notes
 
+> [**08-05-2017**](https://github.com/geeklearningio/gl-vsts-tasks-yarn/releases/tag/0.7.0)
+> - Bundled Yarn version update to [0.23.4](https://github.com/yarnpkg/yarn/releases/tag/v0.23.4) (only impacts agents without yarn preinstalled)
+
 > [**07-04-2017**](https://github.com/geeklearningio/gl-vsts-tasks-yarn/releases/tag/0.6.0)
 > - Bundled Yarn version update to [0.22.0](https://github.com/yarnpkg/yarn/releases/tag/v0.22.0) (only impacts agents without yarn preinstalled)
 
