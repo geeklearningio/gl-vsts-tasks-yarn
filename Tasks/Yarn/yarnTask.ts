@@ -1,13 +1,19 @@
-import path = require('path');
-import fs = require('fs-extra');
-import tl = require('vsts-task-lib/task');
-import q = require('q');
+import * as path from 'path';
+import * as fs from 'fs-extra';
+import * as tl from 'vsts-task-lib/task';
+import * as q from 'q';
+import * as util from './util';
+import { INpmRegistry, NpmRegistry } from './npmregistry';
+import { RegistryLocation } from './constants';
 
 var targz = require('yog-tar.gz');
 
 var yarnPath = tl.which("yarn"); //path.join(__dirname, 'node_modules/.bin/yarn')
 var args = tl.getInput("Arguments");
 var projectPath = tl.getPathInput("ProjectDirectory")
+var customRegistry = tl.getInput("customRegistry")
+var customFeed = tl.getInput("customFeed")
+var customEndpoint = tl.getInput("customEndpoint")
 
 function detar(source: string, dest: string): q.Promise<any> {
     var deferral = q.defer<any>();
@@ -35,6 +41,37 @@ async function yarnExec() {
         }
 
         tl.debug(yarnPath);
+        
+        let npmrc = util.getTempNpmrcPath();
+        let npmRegistries: INpmRegistry[] = await util.getLocalNpmRegistries(projectPath);
+        let overrideNpmrc = false;
+        let registryLocation = tl.getInput(customRegistry);
+
+        switch (registryLocation) {
+            case RegistryLocation.Feed:
+                tl.debug(tl.loc('UseFeed'));
+                overrideNpmrc = true;
+                let feedId = tl.getInput(customFeed, true);
+                npmRegistries.push(await NpmRegistry.FromFeedId(feedId));
+                break;
+            case RegistryLocation.Npmrc:
+                tl.debug(tl.loc('UseNpmrc'));
+                let endpointIds = tl.getDelimitedInput(customEndpoint, ',');
+                if (endpointIds && endpointIds.length > 0) {
+                    let endpointRegistries = endpointIds.map(e => NpmRegistry.FromServiceEndpoint(e, true));
+                    npmRegistries = npmRegistries.concat(endpointRegistries);
+                }
+                break;
+        }
+
+        for (let registry of npmRegistries) {
+            if (registry.authOnly === false) {
+                tl.debug(tl.loc('UsingRegistry', registry.url));
+                util.appendToNpmrc(npmrc, `registry=${registry.url}\n`);
+            }
+            tl.debug(tl.loc('AddingAuthRegistry', registry.url));
+            util.appendToNpmrc(npmrc, `${registry.auth}\n`);
+        }
 
         var yarn = tl.tool(yarnPath);
 
@@ -48,10 +85,11 @@ async function yarnExec() {
             cwd: projectPath,
             env: <any>process.env,
             silent: false,
-            failOnStdErr: undefined,
-            ignoreReturnCode: undefined,
+            failOnStdErr: false,
+            ignoreReturnCode: false,
             outStream: undefined,
-            errStream: undefined
+            errStream: undefined,
+            windowsVerbatimArguments: undefined
         });
 
         tl.setResult(tl.TaskResult.Succeeded, "Yarn executed successfully");
