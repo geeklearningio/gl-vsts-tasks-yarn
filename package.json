@@ -6,12 +6,11 @@
     "doc": "docs"
   },
   "scripts": {
-    "clean" : "node ./BuildScripts/clean.js",
-    "pullsubmodules": "git submodule foreach git pull origin master",
-    "postinstall": "node ./BuildScripts/install.js",
-    "prebuild": "node ./BuildScripts/prebuild.js",
+    "clean": "vsts-build-tools-clean",
+    "postinstall": "vsts-build-tools-install",
+    "prebuild": "vsts-build-tools-prebuild",
     "build": "tsc",
-    "package": "node BuildScripts/package.js",
+    "package": "vsts-build-tools-package",
     "build:test": "run-s build test",
     "test": "jasmine JASMINE_CONFIG_PATH=./Tests/jasmine.json",
     "test:chutzpah": "chutzpah.console ./Tests"
@@ -37,6 +36,7 @@
   "devDependencies": {
     "async": "2.0.1",
     "karma": "^1.1.2",
-    "npm-run-all": "2.3.0"
+    "npm-run-all": "2.3.0",
+    "gl-vsts-tasks-build-scripts": "0.2.0-alpha.9"
   }
 }
