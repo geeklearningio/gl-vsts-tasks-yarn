@@ -1,6 +1,7 @@
 import * as path from 'path';
 import * as fs from 'fs-extra';
 import * as tl from 'vsts-task-lib/task';
+import * as tr from 'vsts-task-lib/toolrunner';
 import * as q from 'q';
 import * as util from './util';
 import { INpmRegistry, NpmRegistry } from './npmregistry';
@@ -14,6 +15,10 @@ var projectPath = tl.getPathInput("ProjectDirectory")
 var customRegistry = tl.getInput("customRegistry")
 var customFeed = tl.getInput("customFeed")
 var customEndpoint = tl.getInput("customEndpoint")
+
+function projectNpmrc(): string {
+    return path.join(projectPath, '.npmrc');
+}
 
 function detar(source: string, dest: string): q.Promise<any> {
     var deferral = q.defer<any>();
@@ -29,6 +34,30 @@ function detar(source: string, dest: string): q.Promise<any> {
     return deferral.promise;
 }
 
+function saveProjectNpmrc(overrideProjectNpmrc: boolean): void {
+
+    if (overrideProjectNpmrc) {
+
+        tl.debug('OverridingProjectNpmrc: ' + projectNpmrc());
+
+        util.saveFile(projectNpmrc());
+
+        tl.rmRF(projectNpmrc());
+
+    }
+
+}
+
+function restoreProjectNpmrc(overrideProjectNpmrc: boolean): void {
+
+    if (overrideProjectNpmrc) {
+
+        tl.debug('RestoringProjectNpmrc');
+
+        util.restoreFile(projectNpmrc());
+    }
+}
+
 async function yarnExec() {
     try {
 
@@ -41,7 +70,7 @@ async function yarnExec() {
         }
 
         tl.debug(yarnPath);
-        
+
         let npmrc = util.getTempNpmrcPath();
         let npmRegistries: INpmRegistry[] = await util.getLocalNpmRegistries(projectPath);
         let overrideNpmrc = false;
@@ -81,7 +110,7 @@ async function yarnExec() {
 
         yarn.line(args);
 
-        var result = await yarn.exec({
+        let options: tr.IExecOptions = {
             cwd: projectPath,
             env: <any>process.env,
             silent: false,
@@ -90,7 +119,17 @@ async function yarnExec() {
             outStream: undefined,
             errStream: undefined,
             windowsVerbatimArguments: undefined
-        });
+        }
+
+        if (this.npmrc) {
+            options.env['NPM_CONFIG_USERCONFIG'] = this.npmrc;
+        }
+
+        saveProjectNpmrc(overrideNpmrc);
+
+        var result = await yarn.exec(options);
+
+        restoreProjectNpmrc(overrideNpmrc);
 
         tl.setResult(tl.TaskResult.Succeeded, "Yarn executed successfully");
 
