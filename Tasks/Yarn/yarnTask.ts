@@ -1,13 +1,24 @@
-import path = require('path');
-import fs = require('fs-extra');
-import tl = require('vsts-task-lib/task');
-import q = require('q');
+import * as path from 'path';
+import * as fs from 'fs-extra';
+import * as tl from 'vsts-task-lib/task';
+import * as tr from 'vsts-task-lib/toolrunner';
+import * as q from 'q';
+import * as util from './util';
+import { INpmRegistry, NpmRegistry } from './npmregistry';
+import { RegistryLocation } from './constants';
 
 var targz = require('yog-tar.gz');
 
 var yarnPath = tl.which("yarn"); //path.join(__dirname, 'node_modules/.bin/yarn')
 var args = tl.getInput("Arguments");
 var projectPath = tl.getPathInput("ProjectDirectory")
+var customRegistry = tl.getInput("customRegistry")
+var customFeed = tl.getInput("customFeed")
+var customEndpoint = tl.getInput("customEndpoint")
+
+function projectNpmrc(): string {
+    return path.join(projectPath, '.npmrc');
+}
 
 function detar(source: string, dest: string): q.Promise<any> {
     var deferral = q.defer<any>();
@@ -23,6 +34,30 @@ function detar(source: string, dest: string): q.Promise<any> {
     return deferral.promise;
 }
 
+function saveProjectNpmrc(overrideProjectNpmrc: boolean): void {
+
+    if (overrideProjectNpmrc) {
+
+        tl.debug('OverridingProjectNpmrc: ' + projectNpmrc());
+
+        util.saveFile(projectNpmrc());
+
+        tl.rmRF(projectNpmrc());
+
+    }
+
+}
+
+function restoreProjectNpmrc(overrideProjectNpmrc: boolean): void {
+
+    if (overrideProjectNpmrc) {
+
+        tl.debug('RestoringProjectNpmrc');
+
+        util.restoreFile(projectNpmrc());
+    }
+}
+
 async function yarnExec() {
     try {
 
@@ -36,6 +71,37 @@ async function yarnExec() {
 
         tl.debug(yarnPath);
 
+        let npmrc = util.getTempNpmrcPath();
+        let npmRegistries: INpmRegistry[] = await util.getLocalNpmRegistries(projectPath);
+        let overrideNpmrc = false;
+        let registryLocation = tl.getInput(customRegistry);
+
+        switch (registryLocation) {
+            case RegistryLocation.Feed:
+                tl.debug(tl.loc('UseFeed'));
+                overrideNpmrc = true;
+                let feedId = tl.getInput(customFeed, true);
+                npmRegistries.push(await NpmRegistry.FromFeedId(feedId));
+                break;
+            case RegistryLocation.Npmrc:
+                tl.debug(tl.loc('UseNpmrc'));
+                let endpointIds = tl.getDelimitedInput(customEndpoint, ',');
+                if (endpointIds && endpointIds.length > 0) {
+                    let endpointRegistries = endpointIds.map(e => NpmRegistry.FromServiceEndpoint(e, true));
+                    npmRegistries = npmRegistries.concat(endpointRegistries);
+                }
+                break;
+        }
+
+        for (let registry of npmRegistries) {
+            if (registry.authOnly === false) {
+                tl.debug(tl.loc('UsingRegistry', registry.url));
+                util.appendToNpmrc(npmrc, `registry=${registry.url}\n`);
+            }
+            tl.debug(tl.loc('AddingAuthRegistry', registry.url));
+            util.appendToNpmrc(npmrc, `${registry.auth}\n`);
+        }
+
         var yarn = tl.tool(yarnPath);
 
         if (tl.getBoolInput('ProductionMode')) {
@@ -44,15 +110,26 @@ async function yarnExec() {
 
         yarn.line(args);
 
-        var result = await yarn.exec({
+        let options: tr.IExecOptions = {
             cwd: projectPath,
             env: <any>process.env,
             silent: false,
-            failOnStdErr: undefined,
-            ignoreReturnCode: undefined,
+            failOnStdErr: false,
+            ignoreReturnCode: false,
             outStream: undefined,
-            errStream: undefined
-        });
+            errStream: undefined,
+            windowsVerbatimArguments: undefined
+        }
+
+        if (this.npmrc) {
+            options.env['NPM_CONFIG_USERCONFIG'] = this.npmrc;
+        }
+
+        saveProjectNpmrc(overrideNpmrc);
+
+        var result = await yarn.exec(options);
+
+        restoreProjectNpmrc(overrideNpmrc);
 
         tl.setResult(tl.TaskResult.Succeeded, "Yarn executed successfully");
 
