@@ -29,8 +29,7 @@
         {
             "name": "customRegistries",
             "displayName": "Custom registries and authentication",
-            "isExpanded": false,
-            "visibleRule": "command = install || command = custom"
+            "isExpanded": false
         }
     ],
     "inputs": [
