@@ -120,20 +120,23 @@ async function yarnExec() {
             errStream: undefined,
             windowsVerbatimArguments: undefined
         }
+        saveProjectNpmrc(overrideNpmrc);
 
-        if (npmrc) {
+        if (overrideNpmrc && npmrc) {
             tl.debug('using custom npmrc');
             if (fs.existsSync(npmrc)) {
                 tl.debug(fs.readFileSync(npmrc, null));
             } else {
                 tl.warning("generated npmrc is empty");
             }
-            options.env['NPM_CONFIG_USERCONFIG'] = npmrc;
+            fs.copySync(npmrc, projectNpmrc());
         }
 
-        saveProjectNpmrc(overrideNpmrc);
-
         var result = await yarn.exec(options);
+
+        if (overrideNpmrc && npmrc) {
+            tl.rmRF(projectNpmrc());
+        }
 
         restoreProjectNpmrc(overrideNpmrc);
 
