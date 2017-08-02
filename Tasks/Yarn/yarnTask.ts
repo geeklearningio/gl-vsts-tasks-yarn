@@ -78,13 +78,13 @@ async function yarnExec() {
 
         switch (registryLocation) {
             case RegistryLocation.Feed:
-                tl.debug(tl.loc('UseFeed'));
+                tl.debug("Using internal feed");
                 overrideNpmrc = true;
                 let feedId = tl.getInput(customFeed, true);
                 npmRegistries.push(await NpmRegistry.FromFeedId(feedId));
                 break;
             case RegistryLocation.Npmrc:
-                tl.debug(tl.loc('UseNpmrc'));
+                tl.debug("Using registries in .npmrc");
                 let endpointIds = tl.getDelimitedInput(customEndpoint, ',');
                 if (endpointIds && endpointIds.length > 0) {
                     let endpointRegistries = endpointIds.map(e => NpmRegistry.FromServiceEndpoint(e, true));
@@ -95,10 +95,10 @@ async function yarnExec() {
 
         for (let registry of npmRegistries) {
             if (registry.authOnly === false) {
-                tl.debug(tl.loc('UsingRegistry', registry.url));
+                tl.debug("Using registry: " + registry.url);
                 util.appendToNpmrc(npmrc, `registry=${registry.url}\n`);
             }
-            tl.debug(tl.loc('AddingAuthRegistry', registry.url));
+            tl.debug("Adding auth for registry: " + registry.url);
             util.appendToNpmrc(npmrc, `${registry.auth}\n`);
         }
 
@@ -122,6 +122,8 @@ async function yarnExec() {
         }
 
         if (npmrc) {
+            tl.debug('using custom npmrc');
+            tl.debug(fs.readFileSync(npmrc, null));
             options.env['NPM_CONFIG_USERCONFIG'] = npmrc;
         }
 
@@ -132,10 +134,13 @@ async function yarnExec() {
         restoreProjectNpmrc(overrideNpmrc);
 
         tl.setResult(tl.TaskResult.Succeeded, "Yarn executed successfully");
-
+        tl.rmRF(npmrc);
+        
     } catch (err) {
         console.error(String(err));
         tl.setResult(tl.TaskResult.Failed, String(err));
+    } finally {
+        tl.rmRF(util.getTempPath());
     }
 }
 
