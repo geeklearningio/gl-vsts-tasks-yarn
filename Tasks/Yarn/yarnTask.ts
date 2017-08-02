@@ -121,8 +121,8 @@ async function yarnExec() {
             windowsVerbatimArguments: undefined
         }
 
-        if (this.npmrc) {
-            options.env['NPM_CONFIG_USERCONFIG'] = this.npmrc;
+        if (npmrc) {
+            options.env['NPM_CONFIG_USERCONFIG'] = npmrc;
         }
 
         saveProjectNpmrc(overrideNpmrc);
