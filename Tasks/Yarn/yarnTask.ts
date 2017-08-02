@@ -74,13 +74,13 @@ async function yarnExec() {
         let npmrc = util.getTempNpmrcPath();
         let npmRegistries: INpmRegistry[] = await util.getLocalNpmRegistries(projectPath);
         let overrideNpmrc = false;
-        let registryLocation = tl.getInput(customRegistry);
+        let registryLocation = customRegistry;
 
         switch (registryLocation) {
             case RegistryLocation.Feed:
                 tl.debug("Using internal feed");
                 overrideNpmrc = true;
-                let feedId = tl.getInput(customFeed, true);
+                let feedId = tl.getInput("customFeed", true);
                 npmRegistries.push(await NpmRegistry.FromFeedId(feedId));
                 break;
             case RegistryLocation.Npmrc:
@@ -123,7 +123,11 @@ async function yarnExec() {
 
         if (npmrc) {
             tl.debug('using custom npmrc');
-            tl.debug(fs.readFileSync(npmrc, null));
+            if (fs.existsSync(npmrc)) {
+                tl.debug(fs.readFileSync(npmrc, null));
+            } else {
+                tl.warning("generated npmrc is empty");
+            }
             options.env['NPM_CONFIG_USERCONFIG'] = npmrc;
         }
 
@@ -135,7 +139,7 @@ async function yarnExec() {
 
         tl.setResult(tl.TaskResult.Succeeded, "Yarn executed successfully");
         tl.rmRF(npmrc);
-        
+
     } catch (err) {
         console.error(String(err));
         tl.setResult(tl.TaskResult.Failed, String(err));
