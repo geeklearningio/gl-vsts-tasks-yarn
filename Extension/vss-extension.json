@@ -59,6 +59,7 @@
         }
     ],
     "repository" :{
+        "type": "git",
         "uri": "https://github.com/geeklearningio/gl-vsts-tasks-yarn"
     }
 }
