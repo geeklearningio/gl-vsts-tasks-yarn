@@ -101,10 +101,6 @@ async function yarnExec() {
                 break;
         }
         
-        if(npmRegistries.length){
-            util.appendToNpmrc(npmrc, "always-auth=true");
-        }
-
         for (let registry of npmRegistries) {
             if (registry.authOnly === false) {
                 tl.debug("Using registry: " + registry.url);
