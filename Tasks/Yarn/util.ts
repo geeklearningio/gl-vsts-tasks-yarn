@@ -15,6 +15,12 @@ export function appendToNpmrc(npmrc: string, data: string): void {
     } as tl.FsOptions);
 }
 
+export function appendToYarnrc(yarnrc: string, data: string): void {
+    tl.writeFile(yarnrc, data, {
+        flag: 'a'
+    } as tl.FsOptions);
+}
+
 export async function getLocalRegistries(npmrc: string): Promise<string[]> {
     let localRegistries: string[] = [];
     let registries = NpmrcParser.GetRegistries(npmrc);
@@ -81,6 +87,13 @@ export async function getPackagingCollectionUrl(): Promise<string> {
 export function getTempNpmrcPath(): string {
     let id: string = tl.getVariable('Build.BuildId') || tl.getVariable('Release.ReleaseId');
     let tempUserNpmrcPath: string = path.join(getTempPath(), `${id}.npmrc`);
+
+    return tempUserNpmrcPath;
+}
+
+export function getTempYarnrcPath(): string {
+    let id: string = tl.getVariable('Build.BuildId') || tl.getVariable('Release.ReleaseId');
+    let tempUserNpmrcPath: string = path.join(getTempPath(), `${id}.yarnrc`);
 
     return tempUserNpmrcPath;
 }

@@ -25,30 +25,4 @@ The [source](https://github.com/geeklearningio/gl-vsts-tasks-yarn) for this exte
 
 ## Release Notes
 
-> [**03-07-2017**](https://github.com/geeklearningio/gl-vsts-tasks-yarn/releases/tag/0.8.0)
-> - Bundled Yarn version update to [0.27.5](https://github.com/yarnpkg/yarn/releases/tag/v0.27.5) (only impacts agents without yarn preinstalled)
-
-> [**08-05-2017**](https://github.com/geeklearningio/gl-vsts-tasks-yarn/releases/tag/0.7.0)
-> - Bundled Yarn version update to [0.23.4](https://github.com/yarnpkg/yarn/releases/tag/v0.23.4) (only impacts agents without yarn preinstalled)
-
-> [**07-04-2017**](https://github.com/geeklearningio/gl-vsts-tasks-yarn/releases/tag/0.6.0)
-> - Bundled Yarn version update to [0.22.0](https://github.com/yarnpkg/yarn/releases/tag/v0.22.0) (only impacts agents without yarn preinstalled)
-
-> [**22-02-2017**](https://github.com/geeklearningio/gl-vsts-tasks-yarn/releases/tag/0.5.0)
-> - Bundled Yarn version update to [0.20.3](https://github.com/yarnpkg/yarn/releases/tag/v0.20.3) (only impacts agents without yarn preinstalled)
-
-> [**14-02-2017**](https://github.com/geeklearningio/gl-vsts-tasks-yarn/releases/tag/0.4.0)
-> - Bundled Yarn version update to [0.19.1](https://github.com/yarnpkg/yarn/releases/tag/v0.19.1) (only impacts agents without yarn preinstalled)
-
-> [**08-01-2017**](https://github.com/geeklearningio/gl-vsts-tasks-yarn/releases/tag/0.3.0)
-> - Fix a bug preventing additional arguments from working properly.
-> - Bundled Yarn version update to [0.18.1](https://github.com/yarnpkg/yarn/releases/tag/v0.18.1) (only impacts agents without yarn preinstalled)
-
-> **06-12-2016**
-> - Bundled Yarn version update to [0.18.0](https://github.com/yarnpkg/yarn/releases/tag/v0.18.0) (only impacts agents without yarn preinstalled)
-
-> **19-10-2016**
-> - Bundled Yarn version update to [0.16.1](https://github.com/yarnpkg/yarn/releases/tag/v0.16.1) (only impacts agents without yarn preinstalled)
-
-> **18-10-2016**
-> - Bundled Yarn version update to [0.16.0](https://github.com/yarnpkg/yarn/releases/tag/v0.16.0) (only impacts agents without yarn preinstalled)
+Please refer to our [release page on Github](https://github.com/geeklearningio/gl-vsts-tasks-yarn/releases)

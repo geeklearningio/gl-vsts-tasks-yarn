@@ -13,7 +13,6 @@
     "filesGlob": [
         "./Tasks/*.ts",
         "./Tests/*.ts",
-        "./typings/index.d.ts",
         "./Commom/Node/*.d.ts"
     ],
     "exclude":[

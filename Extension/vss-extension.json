@@ -57,5 +57,8 @@
             "path": "Screenshots",
             "addressable": true
         }
-    ]
+    ],
+    "repository" :{
+        "uri": "https://github.com/geeklearningio/gl-vsts-tasks-yarn"
+    }
 }
