@@ -45,10 +45,10 @@ function saveProjectNpmrc(overrideProjectNpmrc: boolean): void {
         tl.debug('OverridingProjectNpmrc: ' + projectNpmrc());
 
         util.saveFile(projectNpmrc());
-        util.saveFile(projectYarnrc());
+        //util.saveFile(projectYarnrc());
 
         tl.rmRF(projectNpmrc());
-        tl.rmRF(projectYarnrc());
+        //tl.rmRF(projectYarnrc());
 
     }
 
@@ -61,7 +61,7 @@ function restoreProjectNpmrc(overrideProjectNpmrc: boolean): void {
         tl.debug('RestoringProjectNpmrc');
 
         util.restoreFile(projectNpmrc());
-        util.restoreFile(projectYarnrc());
+        //util.restoreFile(projectYarnrc());
     }
 }
 
@@ -100,16 +100,20 @@ async function yarnExec() {
                 }
                 break;
         }
+        
+        if(npmRegistries.length){
+            util.appendToNpmrc(npmrc, "always-auth=true");
+        }
 
         for (let registry of npmRegistries) {
             if (registry.authOnly === false) {
                 tl.debug("Using registry: " + registry.url);
                 util.appendToNpmrc(npmrc, `registry=${registry.url}\n`);
-                util.appendToYarnrc(yarnrc, `registry=${registry.url}\n`);
+                //util.appendToYarnrc(yarnrc, `registry=${registry.url}\n`);
             }
             tl.debug("Adding auth for registry: " + registry.url);
             util.appendToNpmrc(npmrc, `${registry.auth}\n`);
-            util.appendToYarnrc(yarnrc, `${registry.auth}\n`);
+            //util.appendToYarnrc(yarnrc, `${registry.auth}\n`);
         }
 
         var yarn = tl.tool(yarnPath);
@@ -139,14 +143,14 @@ async function yarnExec() {
             } else {
                 tl.warning("generated npmrc is empty");
             }
-            tl.debug('using custom yarnrc');
-            if (fs.existsSync(yarnrc)) {
-                tl.debug(fs.readFileSync(yarnrc, { encoding: "utf8" }));
-            } else {
-                tl.warning("generated yarnrc is empty");
-            }
+            // tl.debug('using custom yarnrc');
+            // if (fs.existsSync(yarnrc)) {
+            //     tl.debug(fs.readFileSync(yarnrc, { encoding: "utf8" }));
+            // } else {
+            //     tl.warning("generated yarnrc is empty");
+            // }
             fs.copySync(npmrc, projectNpmrc());
-            fs.copySync(yarnrc, projectYarnrc());
+            // fs.copySync(yarnrc, projectYarnrc());
         }
 
         var result = await yarn.exec(options);
