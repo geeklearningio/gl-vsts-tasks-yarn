@@ -93,7 +93,7 @@ async function yarnExec() {
                 break;
             case RegistryLocation.Npmrc:
                 tl.debug("Using registries in .npmrc");
-                let endpointIds = tl.getDelimitedInput(customEndpoint, ',');
+                let endpointIds = tl.getDelimitedInput("customEndpoint", ',');
                 if (endpointIds && endpointIds.length > 0) {
                     let endpointRegistries = endpointIds.map(e => NpmRegistry.FromServiceEndpoint(e, true));
                     npmRegistries = npmRegistries.concat(endpointRegistries);
