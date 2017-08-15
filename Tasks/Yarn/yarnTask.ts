@@ -162,6 +162,9 @@ async function yarnExec() {
 
     } catch (err) {
         console.error(String(err));
+        if(err.stack){
+            tl.debug(err.stack);
+        }
         tl.setResult(tl.TaskResult.Failed, String(err));
     } finally {
         tl.rmRF(util.getTempPath());
