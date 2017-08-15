@@ -1,7 +1,7 @@
 # Yarn Build and Release Tasks
 
 [Yarn](https://yarnpkg.com/) is Facebook's npm alternative. It is the fast, reliable and secure dependency management. 
-This extension brings the power of Yarn to Visual Studio Team Services Build and Release Management. It enables use to use yarn with against official npm registry or any registry you like such as Myget or [Visual Studio Team Services Package Management](https://marketplace.visualstudio.com/items?itemName=ms.feed#).
+This extension brings the power of Yarn to Visual Studio Team Services Build and Release Management. It enables using yarn with the official npm registry or any registry you like such as Myget or [Visual Studio Team Services Package Management](https://marketplace.visualstudio.com/items?itemName=ms.feed#).
 
 ![GeekLearning Loves Yarn](Screenshots/GeekLearningLovesYarn.png)
 
