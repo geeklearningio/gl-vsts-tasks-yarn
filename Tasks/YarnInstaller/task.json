@@ -1,0 +1,56 @@
+{
+    "id": "57066373-3f34-492b-941a-d66dd6b079c4",
+    "name": "YarnInstaller",
+    "friendlyName": "Yarn Tool Installer",
+    "description": "Installs a version of Yarn",
+    "helpMarkDown": "[More Information](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn) (Version #{Version}#)",
+    "category": "Utility",
+    "visibility": [
+        "Build",
+        "Release"
+    ],
+    "author": "Geek Learning",
+    "version": {
+        "Major": 0,
+        "Minor": 0,
+        "Patch": 0
+    },
+    "minimumAgentVersion": "1.91.0",
+    "groups": [
+        {
+            "name": "install",
+            "displayName": "Install Options",
+            "isExpanded": false
+        },
+        {
+            "name": "customRegistries",
+            "displayName": "Custom registries and authentication",
+            "isExpanded": false
+        }
+    ],
+    "satisfies": ["yarn"],
+    "instanceNameFormat": "Use Yarn $(versionSpec)",
+    "inputs": [{
+        "name": "versionSpec",
+        "type": "string",
+        "label": "Version of Yarn to install",
+        "defaultValue": "4.0.0",
+        "required": true,
+        "helpMarkDown": "A version or version range that specifies the Yarn version to make available on the path. Use x as a wildcard. See the [list of available Yarn versions](https://github.com/yarnpkg/yarn/releases)."
+        },
+        {
+            "name": "checkLatest",
+            "type": "boolean",
+            "label": "Always download the latest matching version",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "Always check for and download the latest available version of Yarn which satisfies the version spec. This option will also always incur download time, even if the selected version of NuGet is already cached.\n\nEnabling this option could cause unexpected build breaks when a new version of Yarn is released."
+        }
+    ],
+    "execution": {
+        "Node": {
+            "target": "yarnToolInstallerTask.js",
+            "argumentFormat": ""
+        }
+    }
+}
