@@ -81,13 +81,12 @@ async function yarnExec() {
         let npmrc = util.getTempNpmrcPath();
         let yarnrc = util.getTempYarnrcPath();
         let npmRegistries: INpmRegistry[] = await util.getLocalNpmRegistries(projectPath);
-        let overrideNpmrc = false;
+        let overrideNpmrc = true;
         let registryLocation = customRegistry;
 
         switch (registryLocation) {
             case RegistryLocation.Feed:
                 tl.debug("Using internal feed");
-                overrideNpmrc = true;
                 let feedId = tl.getInput("customFeed", true);
                 npmRegistries.push(await NpmRegistry.FromFeedId(feedId));
                 break;
