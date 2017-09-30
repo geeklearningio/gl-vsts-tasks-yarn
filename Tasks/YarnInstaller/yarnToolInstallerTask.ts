@@ -3,7 +3,7 @@ import q = require('q');
 import * as tl from 'vsts-task-lib/task';
 import * as path from 'path';
 import * as toolLib from 'vsts-task-tool-lib/tool';
-import { downloadFile, getTempPath } from './util';
+import { downloadFile, getTempPath, detar } from './util';
 
 let yarnVersionsFile = path.join(getTempPath(), "yarnVersions.json");
 
@@ -28,11 +28,13 @@ async function downloadYarn(version: { version: string, url: string }) {
     await downloadFile(version.url, downloadPath);
     //await toolLib.downloadTool(version.url);
 
-    let extPath = await toolLib.extractTar(downloadPath);
+    var detarLocation = path.join(getTempPath(), "output");
 
-    let toolRoot = path.join(extPath, version.url.substring(version.url.lastIndexOf('/') + 1));
+    await detar(downloadPath, detarLocation);
 
-    return await toolLib.cacheDir(toolRoot, 'yarn', cleanVersion);
+    //let toolRoot = path.join(detarLocation, version.url.substring(version.url.lastIndexOf('/') + 1));
+
+    return await toolLib.cacheDir(detarLocation, 'yarn', cleanVersion);
 }
 
 async function getYarn(versionSpec: string, checkLatest: boolean) {

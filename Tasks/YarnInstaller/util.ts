@@ -4,6 +4,7 @@ import q = require('q');
 import * as tl from 'vsts-task-lib/task';
 import * as path from 'path';
 import { IncomingMessage } from 'http';
+var targz = require('yog-tar.gz');
 
 export function downloadFile(url: string, dest: string): q.Promise<any> {
     let deferal = q.defer<any>();
@@ -25,10 +26,25 @@ export function getTempPath(): string {
         = tl.getVariable('Agent.BuildDirectory')
         || tl.getVariable('Agent.ReleaseDirectory')
         || process.cwd();
-    let tempPath = path.join(tempNpmrcDir, 'npm');
+    let tempPath = path.join(tempNpmrcDir, 'yarn');
     if (tl.exist(tempPath) === false) {
         tl.mkdirP(tempPath);
     }
 
     return tempPath;
+}
+
+
+export function detar(source: string, dest: string): q.Promise<any> {
+    var deferral = q.defer<any>();
+
+    new targz().extract(source, dest, (err: any) => {
+        if (err) {
+            deferral.reject(err);
+        } else {
+            deferral.resolve();
+        }
+    });
+
+    return deferral.promise;
 }
