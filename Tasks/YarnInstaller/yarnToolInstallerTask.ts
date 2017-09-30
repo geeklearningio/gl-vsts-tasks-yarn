@@ -1,15 +1,15 @@
-import fs = require('fs');
-import q = require('q');
-import * as tl from 'vsts-task-lib/task';
-import * as path from 'path';
-import * as toolLib from 'vsts-task-tool-lib/tool';
-import { downloadFile, getTempPath, detar } from './util';
+import fs = require("fs");
+import q = require("q");
+import * as tl from "vsts-task-lib/task";
+import * as path from "path";
+import * as toolLib from "vsts-task-tool-lib/tool";
+import { downloadFile, getTempPath, detar } from "./util";
 
 let yarnVersionsFile = path.join(getTempPath(), "yarnVersions.json");
 
 async function queryLatestMatch(versionSpec: string): Promise<{ version: string, url: string }> {
     await downloadFile("https://geeklearningassets.blob.core.windows.net/yarn/tarballs.json", yarnVersionsFile);
-    var yarnVersions = <{ [key: string]: string }>JSON.parse(fs.readFileSync(yarnVersionsFile, { encoding: "utf8" }));
+    let yarnVersions = <{ [key: string]: string }>JSON.parse(fs.readFileSync(yarnVersionsFile, { encoding: "utf8" }));
 
     let version: string = toolLib.evaluateVersions(Object.keys(yarnVersions), versionSpec);
 
@@ -24,17 +24,12 @@ async function downloadYarn(version: { version: string, url: string }) {
     let cleanVersion = toolLib.cleanVersion(version.version);
 
     let downloadPath: string = path.join(getTempPath(), `yarn-${cleanVersion}.tar.gz`);
-
     await downloadFile(version.url, downloadPath);
-    //await toolLib.downloadTool(version.url);
 
-    var detarLocation = path.join(getTempPath(), "output");
-
+    let detarLocation = path.join(getTempPath(), "output");
     await detar(downloadPath, detarLocation);
 
-    //let toolRoot = path.join(detarLocation, version.url.substring(version.url.lastIndexOf('/') + 1));
-
-    return await toolLib.cacheDir(detarLocation, 'yarn', cleanVersion);
+    return await toolLib.cacheDir(detarLocation, "yarn", cleanVersion);
 }
 
 async function getYarn(versionSpec: string, checkLatest: boolean) {
@@ -45,7 +40,7 @@ async function getYarn(versionSpec: string, checkLatest: boolean) {
     // check cache
     let toolPath: string;
     if (!checkLatest) {
-        toolPath = toolLib.findLocalTool('yarn', versionSpec);
+        toolPath = toolLib.findLocalTool("yarn", versionSpec);
     }
 
     if (!toolPath) {
@@ -62,10 +57,8 @@ async function getYarn(versionSpec: string, checkLatest: boolean) {
             }
 
             // check cache
-            toolPath = toolLib.findLocalTool('yarn', version.version)
+            toolPath = toolLib.findLocalTool("yarn", version.version);
         }
-
-
 
         if (!toolPath) {
 
@@ -76,8 +69,6 @@ async function getYarn(versionSpec: string, checkLatest: boolean) {
         toolLib.prependPath(toolPath);
     }
 
-
-
     //
     // a tool installer initimately knows details about the layout of that tool
     // for example, node binary is in the bin folder after the extract on Mac/Linux.
@@ -85,18 +76,17 @@ async function getYarn(versionSpec: string, checkLatest: boolean) {
     //
 
     let possibleLocations = [
-        'dist/bin',
-        'bin'
+        "dist/bin",
+        "bin"
     ];
 
-    var actualLocation = possibleLocations.filter(x => fs.existsSync(path.join(toolPath, x, 'yarn')));
+    let actualLocation = possibleLocations.filter(x => fs.existsSync(path.join(toolPath, x, "yarn")));
 
     if (actualLocation.length) {
         toolPath = path.join(toolPath, possibleLocations[0]);
     } else {
-        throw new Error('Yarn package layout unexpected.');
+        throw new Error("Yarn package layout unexpected.");
     }
-
 
     //
     // prepend the tools path. instructs the agent to prepend for future tasks
@@ -107,8 +97,8 @@ async function getYarn(versionSpec: string, checkLatest: boolean) {
 
 async function run() {
     try {
-        let versionSpec = tl.getInput('versionSpec', true);
-        let checkLatest: boolean = tl.getBoolInput('checkLatest', false);
+        let versionSpec = tl.getInput("versionSpec", true);
+        let checkLatest: boolean = tl.getBoolInput("checkLatest", false);
 
         await getYarn(versionSpec, checkLatest);
     }
