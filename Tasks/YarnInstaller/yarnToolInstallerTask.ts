@@ -1,4 +1,3 @@
-import http = require('http');
 import fs = require('fs');
 import q = require('q');
 import * as tl from 'vsts-task-lib/task';
@@ -9,7 +8,7 @@ import { downloadFile, getTempPath } from './util';
 let yarnVersionsFile = path.join(getTempPath(), "yarnVersions.json");
 
 async function queryLatestMatch(versionSpec: string): Promise<{ version: string, url: string }> {
-    await downloadFile("http://geeklearningassets.blob.core.windows.net/yarn/tarballs.json", yarnVersionsFile);
+    await downloadFile("https://geeklearningassets.blob.core.windows.net/yarn/tarballs.json", yarnVersionsFile);
     var yarnVersions = <{ [key: string]: string }>JSON.parse(fs.readFileSync(yarnVersionsFile, { encoding: "utf8" }));
 
     let version: string = toolLib.evaluateVersions(Object.keys(yarnVersions), versionSpec);
@@ -24,7 +23,10 @@ async function queryLatestMatch(versionSpec: string): Promise<{ version: string,
 async function downloadYarn(version: { version: string, url: string }) {
     let cleanVersion = toolLib.cleanVersion(version.version);
 
-    let downloadPath: string = await toolLib.downloadTool(version.url);
+    let downloadPath: string = path.join(getTempPath(), `yarn-{cleanVersion}.tar.gz`);
+    
+    await downloadFile(downloadPath, version.url);
+    //await toolLib.downloadTool(version.url);
 
     let extPath = await toolLib.extractTar(downloadPath);
 
