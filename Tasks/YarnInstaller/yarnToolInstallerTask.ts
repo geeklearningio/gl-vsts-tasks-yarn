@@ -23,7 +23,7 @@ async function queryLatestMatch(versionSpec: string): Promise<{ version: string,
 async function downloadYarn(version: { version: string, url: string }) {
     let cleanVersion = toolLib.cleanVersion(version.version);
 
-    let downloadPath: string = path.join(getTempPath(), `yarn-{cleanVersion}.tar.gz`);
+    let downloadPath: string = path.join(getTempPath(), `yarn-${cleanVersion}.tar.gz`);
     
     await downloadFile(version.url, downloadPath);
     //await toolLib.downloadTool(version.url);
