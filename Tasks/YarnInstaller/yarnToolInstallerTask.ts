@@ -25,7 +25,7 @@ async function downloadYarn(version: { version: string, url: string }) {
 
     let downloadPath: string = path.join(getTempPath(), `yarn-{cleanVersion}.tar.gz`);
     
-    await downloadFile(downloadPath, version.url);
+    await downloadFile(version.url, downloadPath);
     //await toolLib.downloadTool(version.url);
 
     let extPath = await toolLib.extractTar(downloadPath);
