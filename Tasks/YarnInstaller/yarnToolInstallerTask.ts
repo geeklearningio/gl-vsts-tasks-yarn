@@ -24,7 +24,7 @@ async function downloadYarn(version: { version: string, url: string }) {
     let cleanVersion = toolLib.cleanVersion(version.version);
 
     let downloadPath: string = path.join(getTempPath(), `yarn-${cleanVersion}.tar.gz`);
-    
+
     await downloadFile(version.url, downloadPath);
     //await toolLib.downloadTool(version.url);
 
@@ -84,7 +84,19 @@ async function getYarn(versionSpec: string, checkLatest: boolean) {
     // layouts could change by version, by platform etc... but that's the tool installers job
     //
 
-    toolPath = path.join(toolPath, 'dist/bin');
+    let possibleLocations = [
+        'dist/bin',
+        'bin'
+    ]
+
+    var actualLocation = possibleLocations.filter(x => fs.existsSync(path.join(toolPath, x, 'yarn')));
+
+    if (actualLocation.length) {
+        toolPath = path.join(toolPath, possibleLocations[0]);
+    } else {
+        throw new Error('Yarn package layout unexpected.');
+    }
+
 
     //
     // prepend the tools path. instructs the agent to prepend for future tasks
