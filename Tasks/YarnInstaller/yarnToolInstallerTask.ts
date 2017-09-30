@@ -5,7 +5,6 @@ import * as tl from 'vsts-task-lib/task';
 import * as path from 'path';
 import * as toolLib from 'vsts-task-tool-lib/tool';
 import { downloadFile, getTempPath } from './util';
-import * as restm from 'typed-rest-client/RestClient';
 
 let yarnVersionsFile = path.join(getTempPath(), "yarnVersions.json");
 
