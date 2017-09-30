@@ -80,7 +80,7 @@ async function getYarn(versionSpec: string, checkLatest: boolean) {
     ]);
 
     if (matches.length) {
-        toolPath = path.join(toolPath, path.dirname(matches[0]));
+        toolPath = path.dirname(matches[0]);
     } else {
         throw new Error("Yarn package layout unexpected.");
     }
