@@ -87,7 +87,7 @@ async function getYarn(versionSpec: string, checkLatest: boolean) {
     let possibleLocations = [
         'dist/bin',
         'bin'
-    ]
+    ];
 
     var actualLocation = possibleLocations.filter(x => fs.existsSync(path.join(toolPath, x, 'yarn')));
 
