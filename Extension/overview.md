@@ -11,7 +11,8 @@ Why so much sudden love for Yarn ? You can find out [here](http://geeklearning.i
 
 ## Tasks included
 
-* **[Yarn](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn)**: Execute Yarn (Yarn is bundled for Hosted Agents)
+* **[Yarn installer](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn-Installer)**: Installs Yarn 
+* **[Yarn](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn)**: Execute Yarn
 
 ## Steps
 
