@@ -9,7 +9,8 @@
             ],
             "DisplayNamesSuffix": "",
             "TaskIds": {
-                "Yarn": "0888c9a9-d1b2-4567-aae2-beadcb2059b3"
+                "Yarn": "0888c9a9-d1b2-4567-aae2-beadcb2059b3",
+                "YarnInstaller": "2ec1147b-5c33-41df-94b5-676758d87c1b"
             }
         },
         {
@@ -18,7 +19,8 @@
             "VssExtensionGalleryFlags": [],
             "DisplayNamesSuffix": " (Preview)",
             "TaskIds": {
-                "Yarn": "921bbcb2-f3fe-4b91-a11e-6058a0f745ea"
+                "Yarn": "921bbcb2-f3fe-4b91-a11e-6058a0f745ea",
+                "YarnInstaller": "ea727cbf-55f1-4c53-936d-41de6c8f0532"
             }
         },
         {
@@ -27,7 +29,8 @@
             "VssExtensionGalleryFlags": [],
             "DisplayNamesSuffix": " (Development)",
             "TaskIds": {
-                "Yarn": "57066373-3f34-492b-941a-d66dd6b079c4"
+                "Yarn": "57066373-3f34-492b-941a-d66dd6b079c4",
+                "YarnInstaller": "920f3027-2a07-4619-a8df-2ed5cc4eb791"
             }
         }
     ]
