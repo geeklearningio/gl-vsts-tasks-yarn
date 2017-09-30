@@ -75,15 +75,12 @@ async function getYarn(versionSpec: string, checkLatest: boolean) {
     // layouts could change by version, by platform etc... but that's the tool installers job
     //
 
-    let possibleLocations = [
-        "dist/bin",
-        "bin"
-    ];
+    let matches = tl.findMatch(toolPath, [
+        "**/bin/yarn.cmd",
+    ]);
 
-    let actualLocation = possibleLocations.filter(x => fs.existsSync(path.join(toolPath, x, "yarn")));
-
-    if (actualLocation.length) {
-        toolPath = path.join(toolPath, possibleLocations[0]);
+    if (matches.length) {
+        toolPath = path.join(toolPath, path.dirname(matches[0]));
     } else {
         throw new Error("Yarn package layout unexpected.");
     }
