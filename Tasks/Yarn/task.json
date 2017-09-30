@@ -5,6 +5,7 @@
     "description": "Executes Yarn",
     "helpMarkDown": "[More Information](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn) (Version #{Version}#)",
     "category": "Utility",
+    "preview": "true",
     "visibility": [
         "Build",
         "Release"
@@ -16,7 +17,8 @@
         "Patch": 0
     },
     "demands": [
-        "npm"
+        "npm",
+        "yarn"
     ],
     "minimumAgentVersion": "1.91.0",
     "instanceNameFormat": "Yarn $(Arguments)",

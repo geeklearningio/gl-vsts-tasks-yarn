@@ -9,7 +9,7 @@ import { RegistryLocation } from './constants';
 
 var targz = require('yog-tar.gz');
 
-var yarnPath = tl.which("yarn"); //path.join(__dirname, 'node_modules/.bin/yarn')
+var yarnPath = tl.which("yarn");
 var args = tl.getInput("Arguments");
 var projectPath = tl.getPathInput("ProjectDirectory")
 var customRegistry = tl.getInput("customRegistry")
@@ -69,11 +69,10 @@ async function yarnExec() {
     try {
 
         if (!yarnPath) {
-            var yarnDest = path.join(tl.getVariable("AGENT_WORKFOLDER"), 'yarn');
-            await detar(path.join(__dirname, 'yarn-latest.tar.gz'), yarnDest);
-            yarnPath = path.join(yarnDest, 'dist/bin/yarn' + (process.platform === 'win32' ? '.cmd' : ''));
-            tl.debug(yarnDest);
-            tl.debug(JSON.stringify(fs.readdirSync(yarnDest)));
+            throw new Error("couldn't locate Yarn");
+            // var yarnDest = path.join(tl.getVariable("AGENT_WORKFOLDER"), 'yarn');
+            // await detar(path.join(__dirname, 'yarn-latest.tar.gz'), yarnDest);
+            // yarnPath = path.join(yarnDest, 'dist/bin/yarn' + (process.platform === 'win32' ? '.cmd' : ''));
         }
 
         tl.debug(yarnPath);
