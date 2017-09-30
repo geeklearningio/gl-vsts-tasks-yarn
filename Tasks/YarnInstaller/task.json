@@ -35,7 +35,7 @@
         "name": "versionSpec",
         "type": "string",
         "label": "Version of Yarn to install",
-        "defaultValue": "4.0.0",
+        "defaultValue": "1.x",
         "required": true,
         "helpMarkDown": "A version or version range that specifies the Yarn version to make available on the path. Use x as a wildcard. See the [list of available Yarn versions](https://github.com/yarnpkg/yarn/releases)."
         },

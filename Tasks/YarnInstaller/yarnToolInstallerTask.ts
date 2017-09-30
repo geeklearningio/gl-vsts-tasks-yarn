@@ -9,7 +9,7 @@ import { downloadFile, getTempPath } from './util';
 let yarnVersionsFile = path.join(getTempPath(), "yarnVersions.json");
 
 async function queryLatestMatch(versionSpec: string): Promise<{ version: string, url: string }> {
-    await downloadFile("https://geeklearningassets.blob.core.windows.net/yarn/tarballs.json", yarnVersionsFile);
+    await downloadFile("http://geeklearningassets.blob.core.windows.net/yarn/tarballs.json", yarnVersionsFile);
     var yarnVersions = <{ [key: string]: string }>JSON.parse(fs.readFileSync(yarnVersionsFile, { encoding: "utf8" }));
 
     let version: string = toolLib.evaluateVersions(Object.keys(yarnVersions), versionSpec);
