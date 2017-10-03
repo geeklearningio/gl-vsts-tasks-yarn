@@ -17,18 +17,7 @@
         "Patch": 0
     },
     "minimumAgentVersion": "1.91.0",
-    "groups": [
-        {
-            "name": "install",
-            "displayName": "Install Options",
-            "isExpanded": false
-        },
-        {
-            "name": "customRegistries",
-            "displayName": "Custom registries and authentication",
-            "isExpanded": false
-        }
-    ],
+    "groups": [],
     "satisfies": ["yarn"],
     "instanceNameFormat": "Use Yarn $(versionSpec)",
     "inputs": [{
