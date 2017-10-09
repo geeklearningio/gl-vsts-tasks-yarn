@@ -71,6 +71,7 @@ async function yarnExec() {
         tl.debug(yarnPath);
 
         let npmrc = util.getTempNpmrcPath();
+        fs.ensureFileSync(npmrc);
         let npmRegistries: INpmRegistry[] = await util.getLocalNpmRegistries(projectPath);
         let overrideNpmrc = fs.existsSync(projectNpmrc());
         let registryLocation = customRegistry;
