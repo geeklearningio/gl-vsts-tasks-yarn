@@ -99,6 +99,9 @@ async function yarnExec() {
             }
             tl.debug("Adding auth for registry: " + registry.url);
             util.appendToNpmrc(npmrc, `${registry.auth}\n`);
+            if (registry.authOnly) {
+                util.appendToNpmrc(npmrc, "always-auth=true\n");
+            }
         }
 
         let yarn = tl.tool(yarnPath);
