@@ -3,8 +3,9 @@ import * as fs from "fs-extra";
 import * as tl from "vsts-task-lib/task";
 import * as tr from "vsts-task-lib/toolrunner";
 import * as q from "q";
-import * as util from "./util";
-import { INpmRegistry, NpmRegistry } from "./npmregistry";
+import * as util from "npm-common/util";
+import { INpmRegistry, NpmRegistry } from "npm-common/npmregistry";
+
 import { RegistryLocation } from "./constants";
 
 let targz = require("yog-tar.gz");
@@ -20,9 +21,6 @@ function projectNpmrc(): string {
     return path.join(projectPath, ".npmrc");
 }
 
-function projectYarnrc(): string {
-    return path.join(projectPath, ".yarnrc");
-}
 
 function detar(source: string, dest: string): q.Promise<any> {
     let deferral = q.defer<any>();
@@ -73,9 +71,8 @@ async function yarnExec() {
         tl.debug(yarnPath);
 
         let npmrc = util.getTempNpmrcPath();
-        let yarnrc = util.getTempYarnrcPath();
         let npmRegistries: INpmRegistry[] = await util.getLocalNpmRegistries(projectPath);
-        let overrideNpmrc = true;
+        let overrideNpmrc = fs.existsSync(projectNpmrc());
         let registryLocation = customRegistry;
 
         switch (registryLocation) {
@@ -123,20 +120,11 @@ async function yarnExec() {
         };
 
         saveProjectNpmrc(overrideNpmrc);
-
-        if (overrideNpmrc && npmrc) {
-            tl.debug("using custom npmrc");
-            if (fs.existsSync(npmrc)) {
-                tl.debug(fs.readFileSync(npmrc, { encoding: "utf8" }));
-            } else {
-                tl.warning("generated npmrc is empty");
-            }
-            fs.copySync(npmrc, projectNpmrc());
-        }
+        fs.copySync(npmrc, projectNpmrc());
 
         let result = await yarn.exec(options);
 
-        if (overrideNpmrc && npmrc) {
+        if (overrideNpmrc) {
             tl.rmRF(projectNpmrc());
         }
 
