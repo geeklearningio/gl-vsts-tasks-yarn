@@ -97,9 +97,9 @@ async function yarnExec() {
             util.appendToNpmrc(npmrc, `registry=${registry.url}\n`);
             tl.debug("Adding auth for registry: " + registry.url);
             util.appendToNpmrc(npmrc, `${registry.auth}\n`);
-            // if (registry.url.indexOf(".visualstudio.com") >= 0) {
-            //     util.appendToNpmrc(npmrc, "always-auth=true\n");
-            // }
+            if (registry.url.indexOf(".visualstudio.com") >= 0) {
+                util.appendToNpmrc(npmrc, "always-auth=true\n");
+            }
         }
 
         let yarn = tl.tool(yarnPath);
