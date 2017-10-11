@@ -8,6 +8,8 @@ import { INpmRegistry, NpmRegistry } from "npm-common/npmregistry";
 
 import { RegistryLocation } from "./constants";
 
+tl.setResourcePath(path.join(__dirname, "task.json"));
+
 let targz = require("yog-tar.gz");
 
 let yarnPath = tl.which("yarn");
