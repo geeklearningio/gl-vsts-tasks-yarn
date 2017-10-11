@@ -5,17 +5,21 @@
     "description": "Executes Yarn",
     "helpMarkDown": "[More Information](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn) (Version #{Version}#)",
     "category": "Utility",
+    "author": "Geek Learning",
     "preview": "true",
     "visibility": [
         "Build",
         "Release"
     ],
-    "author": "Geek Learning",
     "version": {
         "Major": 0,
         "Minor": 0,
         "Patch": 0
     },
+    "runsOn": [
+        "Agent",
+        "DeploymentGroup"
+    ],
     "demands": [
         "npm",
         "yarn"
