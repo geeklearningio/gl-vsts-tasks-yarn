@@ -19,6 +19,7 @@
         "node_modules",
         "Tasks/Yarn/node_modules",
         "Tasks/YarnInstaller/node_modules",
+        "Tasks/YarnLicenseGate/node_modules",
         "Common",
         "BuildScripts/node_modules",
         ".BuildOutput"
