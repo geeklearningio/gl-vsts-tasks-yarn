@@ -4,8 +4,7 @@
             "Name": "production",
             "VssExtensionIdSuffix": "",
             "VssExtensionGalleryFlags": [
-                "Public",
-                "Preview"
+                "Public"
             ],
             "DisplayNamesSuffix": "",
             "TaskIds": {
