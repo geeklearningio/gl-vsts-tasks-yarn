@@ -9,7 +9,6 @@
         "Build",
         "Release"
     ],
-    "preview": "true",
     "author": "Geek Learning",
     "version": {
         "Major": 0,
