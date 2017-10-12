@@ -3,7 +3,7 @@
     "name": "Yarn",
     "friendlyName": "Yarn task",
     "description": "Executes Yarn",
-    "helpMarkDown": "[More Information](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn) (Version #{Version}#)",
+    "helpMarkDown": "[More Information](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn) (Version #{Version}#).\n\nDear Angular and Ember CLI users, please check our [known issues](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Known-Issues)",
     "category": "Utility",
     "author": "Geek Learning",
     "preview": "true",

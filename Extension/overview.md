@@ -28,6 +28,10 @@ Starting with version `1.x`, you can configure custom registries directly in the
 
 The [source](https://github.com/geeklearningio/gl-vsts-tasks-yarn) for this extension is on GitHub. Take, fork, and extend.
 
+## Known Issues
+
+Please refer to our [wiki page on Github](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Known-Issues)
+
 ## Release Notes
 
 Please refer to our [release page on Github](https://github.com/geeklearningio/gl-vsts-tasks-yarn/releases)
