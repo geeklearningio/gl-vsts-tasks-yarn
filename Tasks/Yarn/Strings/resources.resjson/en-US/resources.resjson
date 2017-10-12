@@ -1,6 +1,6 @@
 {
   "loc.friendlyName": "Yarn task",
-  "loc.helpMarkDown": "[More Information](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn) (Version #{Version}#)",
+  "loc.helpMarkDown": "[More Information](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn) (Version #{Version}#).\n\nDear Angular and Ember CLI users, please check our [known issues](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Known-Issues)",
   "loc.description": "Executes Yarn",
   "loc.instanceNameFormat": "Yarn $(Arguments)",
   "loc.messages.FoundBuildCredentials": "Found build credentials",
