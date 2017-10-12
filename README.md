@@ -26,7 +26,13 @@ Why so much sudden love for Yarn ? You can find out [here](http://geeklearning.i
 3. Run `npm run build` to compile the build tasks.
 4. Run `npm run package -- --version <version>` to create the .vsix extension packages (supports multiple environments) that includes the build tasks.
 
+## Known Issues
+
+Please refer to our [wiki page](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Known-Issues)
+
 ## Release Notes
+
+Please refer to our [release page](https://github.com/geeklearningio/gl-vsts-tasks-yarn/releases)
 
 ## Contributors
 
