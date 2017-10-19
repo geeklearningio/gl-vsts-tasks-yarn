@@ -23,7 +23,6 @@ function projectNpmrc(): string {
     return path.join(projectPath, ".npmrc");
 }
 
-
 function detar(source: string, dest: string): q.Promise<any> {
     let deferral = q.defer<any>();
 
@@ -104,7 +103,7 @@ async function yarnExec() {
             }
         }
 
-        let yarn = tl.tool(yarnPath);
+        let yarn = tl.tool("yarn");
 
         if (tl.getBoolInput("ProductionMode")) {
             yarn.arg("--production");
