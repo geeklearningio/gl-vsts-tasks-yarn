@@ -94,8 +94,11 @@ async function yarnExec() {
         }
 
         for (let registry of npmRegistries) {
-            tl.debug("Using registry: " + registry.url);
-            util.appendToNpmrc(npmrc, `registry=${registry.url}\n`);
+            if (registryLocation === RegistryLocation.Feed) {
+                // Don't clobber existing registry settings when getting registries from .npmrc
+                tl.debug("Using registry: " + registry.url);
+                util.appendToNpmrc(npmrc, `registry=${registry.url}\n`);
+            }
             tl.debug("Adding auth for registry: " + registry.url);
             util.appendToNpmrc(npmrc, `${registry.auth}\n`);
             if (registry.url.indexOf(".visualstudio.com") >= 0) {
