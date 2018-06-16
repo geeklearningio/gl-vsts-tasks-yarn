@@ -8,7 +8,7 @@ import { downloadFile, getTempPath, detar } from "./util";
 let yarnVersionsFile = path.join(getTempPath(), "yarnVersions.json");
 
 async function queryLatestMatch(versionSpec: string, includePrerelease: boolean): Promise<{ version: string, url: string }> {
-    await downloadFile("https://geeklearningassets.blob.core.windows.net/yarn/tarballs.json", yarnVersionsFile);
+    await downloadFile("https://geeklearningassets.blob.core.windows.net/yarn/tarballsV2.json", yarnVersionsFile);
     let yarnVersions = <{ [key: string]: {uri:string, isPrerelease:boolean} }>JSON.parse(fs.readFileSync(yarnVersionsFile, { encoding: "utf8" }));
     let versionsCodes = Object.keys(yarnVersions);
     if (!includePrerelease) {
