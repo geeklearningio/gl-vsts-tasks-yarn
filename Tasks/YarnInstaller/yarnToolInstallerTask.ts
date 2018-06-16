@@ -55,7 +55,8 @@ async function getYarn(versionSpec: string, checkLatest: boolean, includePrerele
         } else {
             // query nodejs.org for a matching version
             version = await queryLatestMatch(versionSpec, includePrerelease);
-
+            tl.debug("Matched version: " + version.version);
+            
             if (!version) {
                 throw new Error(`Unable to find Yarn version '${versionSpec}'.`);
             }
@@ -65,7 +66,7 @@ async function getYarn(versionSpec: string, checkLatest: boolean, includePrerele
         }
 
         if (!toolPath) {
-
+            tl.debug("Downloading tarball: " + version.url);
             // download, extract, cache
             toolPath = await downloadYarn(version);
         }
