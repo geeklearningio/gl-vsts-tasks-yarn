@@ -20,7 +20,6 @@
         "DeploymentGroup"
     ],
     "demands": [
-        "npm",
         "yarn"
     ],
     "minimumAgentVersion": "1.91.0",
