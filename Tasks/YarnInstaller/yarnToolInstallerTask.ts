@@ -12,7 +12,7 @@ async function queryLatestMatch(versionSpec: string, includePrerelease: boolean)
     let yarnVersions = <{ [key: string]: {uri:string, isPrerelease:boolean} }>JSON.parse(fs.readFileSync(yarnVersionsFile, { encoding: "utf8" }));
     let versionsCodes = Object.keys(yarnVersions);
     if (!includePrerelease) {
-        versionsCodes = versionsCodes.filter(v => !yarnVersions[version].isPrerelease);
+        versionsCodes = versionsCodes.filter(v => !yarnVersions[v].isPrerelease);
     }
 
     let version: string = toolLib.evaluateVersions(versionsCodes, versionSpec);
