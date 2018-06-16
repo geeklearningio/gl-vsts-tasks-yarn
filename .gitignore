@@ -255,3 +255,4 @@ Tasks/**/*.d.ts
 Tasks/*/common/**/*.*
 
 .BuildOutput
+.DS_Store
