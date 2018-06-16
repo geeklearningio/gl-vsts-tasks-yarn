@@ -7,17 +7,21 @@ import { downloadFile, getTempPath, detar } from "./util";
 
 let yarnVersionsFile = path.join(getTempPath(), "yarnVersions.json");
 
-async function queryLatestMatch(versionSpec: string): Promise<{ version: string, url: string }> {
+async function queryLatestMatch(versionSpec: string, includePrerelease: boolean): Promise<{ version: string, url: string }> {
     await downloadFile("https://geeklearningassets.blob.core.windows.net/yarn/tarballs.json", yarnVersionsFile);
-    let yarnVersions = <{ [key: string]: string }>JSON.parse(fs.readFileSync(yarnVersionsFile, { encoding: "utf8" }));
+    let yarnVersions = <{ [key: string]: {uri:string, isPrerelease:boolean} }>JSON.parse(fs.readFileSync(yarnVersionsFile, { encoding: "utf8" }));
+    let versionsCodes = Object.keys(yarnVersions);
+    if (!includePrerelease) {
+        versionsCodes = versionsCodes.filter(v => !yarnVersions[version].isPrerelease);
+    }
 
-    let version: string = toolLib.evaluateVersions(Object.keys(yarnVersions), versionSpec);
+    let version: string = toolLib.evaluateVersions(versionsCodes, versionSpec);
 
     if (!version) {
         return undefined;
     }
 
-    return { version: version, url: yarnVersions[version] };
+    return { version: version, url: yarnVersions[version].uri };
 }
 
 async function downloadYarn(version: { version: string, url: string }) {
@@ -32,7 +36,7 @@ async function downloadYarn(version: { version: string, url: string }) {
     return await toolLib.cacheDir(detarLocation, "yarn", cleanVersion);
 }
 
-async function getYarn(versionSpec: string, checkLatest: boolean) {
+async function getYarn(versionSpec: string, checkLatest: boolean, includePrerelease: boolean) {
     if (toolLib.isExplicitVersion(versionSpec)) {
         checkLatest = false; // check latest doesn't make sense when explicit version
     }
@@ -47,10 +51,10 @@ async function getYarn(versionSpec: string, checkLatest: boolean) {
         let version: { version: string, url: string };
         if (toolLib.isExplicitVersion(versionSpec)) {
             // version to download
-            version = await queryLatestMatch(versionSpec);
+            version = await queryLatestMatch(versionSpec, true);
         } else {
             // query nodejs.org for a matching version
-            version = await queryLatestMatch(versionSpec);
+            version = await queryLatestMatch(versionSpec, includePrerelease);
 
             if (!version) {
                 throw new Error(`Unable to find Yarn version '${versionSpec}'.`);
@@ -96,8 +100,9 @@ async function run() {
     try {
         let versionSpec = tl.getInput("versionSpec", true);
         let checkLatest: boolean = tl.getBoolInput("checkLatest", false);
+        let includePrerelease: boolean = tl.getBoolInput("includePrerelease", false);
 
-        await getYarn(versionSpec, checkLatest);
+        await getYarn(versionSpec, checkLatest, includePrerelease);
     }
     catch (error) {
         tl.setResult(tl.TaskResult.Failed, error.message);

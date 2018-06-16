@@ -34,6 +34,14 @@
             "defaultValue": "false",
             "required": false,
             "helpMarkDown": "Always check for and download the latest available version of Yarn which satisfies the version spec. This option will also always incur download time, even if the selected version of NuGet is already cached.\n\nEnabling this option could cause unexpected build breaks when a new version of Yarn is released."
+        },
+        {
+            "name": "includePrerelease",
+            "type": "boolean",
+            "label": "Include prereleases",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "If set releaes marked as prereleases will be included. We recommand you don't set this unless you need it and you have a more restrictive version pattern such as ex: 1.7.x. Also, this parameter does not affect explicit version."
         }
     ],
     "execution": {
