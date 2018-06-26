@@ -14,6 +14,8 @@ Why so much sudden love for Yarn ? You can find out [here](http://geeklearning.i
 * **[Yarn installer](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn-Installer)**: Installs Yarn 
 * **[Yarn](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn)**: Execute Yarn
 
+> Note that Yarn installer uses new agents features hence TFS 2015 is not supported.
+
 ## Steps
 
 After installing the extension, you can add one (or more) of the tasks to a new or existing [build definition](https://www.visualstudio.com/en-us/docs/build/define/create) or [release definition](https://www.visualstudio.com/en-us/docs/release/author-release-definition/more-release-definition)
