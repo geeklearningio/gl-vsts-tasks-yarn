@@ -33,7 +33,7 @@
             "label": "Always download the latest matching version",
             "defaultValue": "false",
             "required": false,
-            "helpMarkDown": "Always check for and download the latest available version of Yarn which satisfies the version spec. This option will also always incur download time, even if the selected version of NuGet is already cached.\n\nEnabling this option could cause unexpected build breaks when a new version of Yarn is released."
+            "helpMarkDown": "Always check for and download the latest available version of Yarn which satisfies the version spec. This option will also always incur download time, even if the selected version of Yarn is already cached.\n\nEnabling this option could cause unexpected build breaks when a new version of Yarn is released."
         },
         {
             "name": "includePrerelease",
