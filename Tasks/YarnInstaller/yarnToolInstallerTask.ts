@@ -1,4 +1,4 @@
-import fs = require("fs");
+import fs = require("fs-extra");
 import q = require("q");
 import * as tl from "vsts-task-lib/task";
 import * as path from "path";
@@ -30,7 +30,8 @@ async function downloadYarn(version: { version: string, url: string }) {
     let downloadPath: string = path.join(getTempPath(), `yarn-${cleanVersion}.tar.gz`);
     await downloadFile(version.url, downloadPath);
 
-    let detarLocation = path.join(getTempPath(), "output");
+    let detarLocation = path.join(getTempPath(), "yarn-output");
+    fs.emptyDirSync(detarLocation);
     await detar(downloadPath, detarLocation);
 
     return await toolLib.cacheDir(detarLocation, "yarn", cleanVersion);
