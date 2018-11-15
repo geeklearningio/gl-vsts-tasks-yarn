@@ -6,100 +6,91 @@
   "helpMarkDown": "ms-resource:loc.helpMarkDown",
   "category": "Utility",
   "author": "Geek Learning",
-  "preview": "true",
-  "visibility": [
-    "Build",
-    "Release"
-  ],
+  "visibility": ["Build", "Release"],
   "version": {
     "Major": 0,
     "Minor": 0,
     "Patch": 1
   },
-  "runsOn": [
-    "Agent",
-    "DeploymentGroup"
-  ],
-  "demands": [
-    "npm",
-    "yarn"
-  ],
+  "runsOn": ["Agent", "DeploymentGroup"],
+  "demands": ["npm", "yarn"],
   "minimumAgentVersion": "1.91.0",
   "instanceNameFormat": "ms-resource:loc.instanceNameFormat",
   "groups": [
     {
-        "name": "install",
-        "displayName": "Install Options",
-        "isExpanded": false
+      "name": "install",
+      "displayName": "Install Options",
+      "isExpanded": false
     },
     {
-        "name": "customRegistries",
-        "displayName": "Custom registries and authentication",
-        "isExpanded": false
+      "name": "customRegistries",
+      "displayName": "Custom registries and authentication",
+      "isExpanded": false
     }
-],
-"inputs": [
+  ],
+  "inputs": [
     {
-        "name": "ProjectDirectory",
-        "type": "filePath",
-        "label": "Project Directory",
-        "defaultValue": "",
-        "required": false,
-        "helpMarkDown": "Source directory"
+      "name": "ProjectDirectory",
+      "type": "filePath",
+      "label": "Project Directory",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "Source directory"
     },
     {
-        "name": "Arguments",
-        "type": "string",
-        "label": "Arguments",
-        "defaultValue": "",
-        "required": false,
-        "helpMarkDown": "Additionals arguments"
+      "name": "Arguments",
+      "type": "string",
+      "label": "Arguments",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "Additionals arguments"
     },
     {
-        "name": "ProductionMode",
-        "type": "boolean",
-        "label": "Production Install",
-        "defaultValue": false,
-        "required": false,
-        "groupName": "install",
-        "helpMarkDown": "appends --production argument"
+      "name": "ProductionMode",
+      "type": "boolean",
+      "label": "Production Install",
+      "defaultValue": false,
+      "required": false,
+      "groupName": "install",
+      "helpMarkDown": "appends --production argument"
     },
     {
-        "groupName": "customRegistries",
-        "name": "customRegistry",
-        "label": "Registries to use",
-        "helpMarkDown": "You can either commit a .npmrc file to your source code repository and set its path here or select a registry from VSTS here.",
-        "type": "radio",
-        "options": {
-            "useNpmrc": "Registries in my .npmrc",
-            "useFeed": "Registry I select here"
-        },
-        "defaultValue": "useNpmrc"
+      "groupName": "customRegistries",
+      "name": "customRegistry",
+      "label": "Registries to use",
+      "helpMarkDown": "You can either commit a .npmrc file to your source code repository and set its path here or select a registry from VSTS here.",
+      "type": "radio",
+      "options": {
+        "useNpmrc": "Registries in my .npmrc",
+        "useFeed": "Registry I select here"
+      },
+      "defaultValue": "useNpmrc"
     },
     {
-        "groupName": "customRegistries",
-        "name": "customFeed",
-        "label": "Use packages from this VSTS/TFS registry",
-        "helpMarkDown": "Include the selected feed in the generated .npmrc.",
-        "type": "pickList",
-        "visibleRule": "customRegistry = useFeed",
-        "required": true
+      "groupName": "customRegistries",
+      "name": "customFeed",
+      "label": "Use packages from this VSTS/TFS registry",
+      "helpMarkDown": "Include the selected feed in the generated .npmrc.",
+      "type": "pickList",
+      "visibleRule": "customRegistry = useFeed",
+      "required": true
     },
     {
-        "groupName": "customRegistries",
-        "name": "customEndpoint",
-        "label": "Credentials for registries outside this account/collection",
-        "helpMarkDown": "Credentials to use for external registries located in the project's .npmrc. For registries in this account/collection, leave this blank; the build’s credentials are used automatically.",
-        "type": "connectedService:externalnpmregistry",
-        "visibleRule": "customRegistry = useNpmrc",
-        "properties": {
-            "MultiSelectFlatList": "true"
-        }
+      "groupName": "customRegistries",
+      "name": "customEndpoint",
+      "label": "Credentials for registries outside this account/collection",
+      "helpMarkDown": "Credentials to use for external registries located in the project's .npmrc. For registries in this account/collection, leave this blank; the build’s credentials are used automatically.",
+      "type": "connectedService:externalnpmregistry",
+      "visibleRule": "customRegistry = useNpmrc",
+      "properties": {
+        "MultiSelectFlatList": "true"
+      }
     }
-],
+  ],
   "execution": {
     "Node": {
-      "target": "npmauth.js"
+      "target": "yarnTask.js",
+      "argumentFormat": ""
     }
   },
   "messages": {
@@ -121,11 +112,5 @@
     "NoIndexJsonFile": "ms-resource:loc.messages.NoIndexJsonFile",
     "RevertedChangesToNpmrc": "ms-resource:loc.messages.RevertedChangesToNpmrc",
     "NpmrcDoesNotExist": "ms-resource:loc.messages.NpmrcDoesNotExist"
-  },
-  "postjobexecution": {
-    "Node": {
-      "target": "npmauthcleanup.js",
-      "argumentFormat": ""
-    }
   }
 }
