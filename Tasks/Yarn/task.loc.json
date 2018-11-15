@@ -13,7 +13,7 @@
     "Patch": 1
   },
   "runsOn": ["Agent", "DeploymentGroup"],
-  "demands": ["npm", "yarn"],
+  "demands": ["yarn"],
   "minimumAgentVersion": "1.91.0",
   "instanceNameFormat": "ms-resource:loc.instanceNameFormat",
   "groups": [
