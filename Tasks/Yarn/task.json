@@ -1,140 +1,125 @@
 {
-    "id": "57066373-3f34-492b-941a-d66dd6b079c4",
-    "name": "Yarn",
-    "friendlyName": "Yarn task",
-    "description": "Executes Yarn",
-    "helpMarkDown": "[More Information](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn) (Version #{Version}#).\n\nDear Angular and Ember CLI users, please check our [known issues](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Known-Issues)",
-    "category": "Utility",
-    "author": "Geek Learning",
-    "visibility": [
-        "Build",
-        "Release"
-    ],
-    "version": {
-        "Major": 0,
-        "Minor": 0,
-        "Patch": 0
+  "id": "57066373-3f34-492b-941a-d66dd6b079c4",
+  "name": "Yarn",
+  "friendlyName": "Yarn task",
+  "description": "Executes Yarn",
+  "helpMarkDown": "[More Information](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn) (Version #{Version}#).\n\nDear Angular and Ember CLI users, please check our [known issues](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Known-Issues)",
+  "category": "Utility",
+  "author": "Geek Learning",
+  "visibility": ["Build", "Release"],
+  "version": {
+    "Major": 0,
+    "Minor": 0,
+    "Patch": 0
+  },
+  "runsOn": ["Agent", "DeploymentGroup"],
+  "demands": ["yarn"],
+  "minimumAgentVersion": "1.91.0",
+  "instanceNameFormat": "Yarn $(Arguments)",
+  "groups": [
+    {
+      "name": "install",
+      "displayName": "Install Options",
+      "isExpanded": false
     },
-    "runsOn": [
-        "Agent",
-        "DeploymentGroup"
-    ],
-    "demands": [
-        "yarn"
-    ],
-    "minimumAgentVersion": "1.91.0",
-    "instanceNameFormat": "Yarn $(Arguments)",
-    "groups": [
-        {
-            "name": "install",
-            "displayName": "Install Options",
-            "isExpanded": false
-        },
-        {
-            "name": "customRegistries",
-            "displayName": "Custom registries and authentication",
-            "isExpanded": false
-        }
-    ],
-    "inputs": [
-        {
-            "name": "ProjectDirectory",
-            "type": "filePath",
-            "label": "Project Directory",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "Source directory"
-        },
-        {
-            "name": "Arguments",
-            "type": "string",
-            "label": "Arguments",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "Additionals arguments"
-        },
-        {
-            "name": "ProductionMode",
-            "type": "boolean",
-            "label": "Production Install",
-            "defaultValue": false,
-            "required": false,
-            "groupName": "install",
-            "helpMarkDown": "appends --production argument"
-        },
-        {
-            "groupName": "customRegistries",
-            "name": "customRegistry",
-            "label": "Registries to use",
-            "helpMarkDown": "You can either commit a .npmrc file to your source code repository and set its path here or select a registry from VSTS here.",
-            "type": "radio",
-            "options": {
-                "useNpmrc": "Registries in my .npmrc",
-                "useFeed": "Registry I select here"
-            },
-            "defaultValue": "useNpmrc"
-        },
-        {
-            "groupName": "customRegistries",
-            "name": "customFeed",
-            "label": "Use packages from this VSTS/TFS registry",
-            "helpMarkDown": "Include the selected feed in the generated .npmrc.",
-            "type": "pickList",
-            "visibleRule": "customRegistry = useFeed",
-            "required": true
-        },
-        {
-            "groupName": "customRegistries",
-            "name": "customEndpoint",
-            "label": "Credentials for registries outside this account/collection",
-            "helpMarkDown": "Credentials to use for external registries located in the project's .npmrc. For registries in this account/collection, leave this blank; the build’s credentials are used automatically.",
-            "type": "connectedService:externalnpmregistry",
-            "visibleRule": "customRegistry = useNpmrc",
-            "properties": {
-                "MultiSelectFlatList": "true"
-            }
-        }
-    ],
-    "dataSourceBindings": [
-        {
-            "target": "customFeed",
-            "endpointId": "tfs:feed",
-            "endpointUrl": "{{endpoint.url}}/_apis/packaging/feeds",
-            "resultSelector": "jsonpath:$.value[*]",
-            "resultTemplate": "{ \"Value\": \"{{{id}}}\", \"DisplayValue\": \"{{{name}}}\"}"
-        },
-        {
-            "target": "publishFeed",
-            "endpointId": "tfs:feed",
-            "endpointUrl": "{{endpoint.url}}/_apis/packaging/feeds",
-            "resultSelector": "jsonpath:$.value[*]",
-            "resultTemplate": "{ \"Value\": \"{{{id}}}\", \"DisplayValue\": \"{{{name}}}\"}"
-        }
-    ],
-    "execution": {
-        "Node": {
-            "target": "yarnTask.js",
-            "argumentFormat": ""
-        }
-    },
-    "messages": {
-        "FoundBuildCredentials": "Found build credentials",
-        "NoBuildCredentials": "Could not find build credentials",
-        "ServiceEndpointNotDefined": "Couldn't find Service Endpoint, make sure the selected endpoint still exists.",
-        "NpmrcNotNpmrc": "The file you selected to authenticate (%s) is not a valid .npmrc file.",
-        "ServiceEndpointUrlNotDefined": "Couldn't find Url for Service Endpoint, make sure Service Endpoint is correctly configured.",
-        "SavingFile": "Saving file %s",
-        "RestoringFile": "Restoring file %s",
-        "AddingAuthRegistry": "Adding auth for registry: %s",
-        "FoundLocalRegistries": "Found %d registries in this account/collection",
-        "AddingLocalCredentials": "Adding credentials for a local registry",
-        "AddingEndpointCredentials": "Adding credentials for the %s endpoint",
-        "AuthenticatingThisNpmrc": "Adding authentication to the .npmrc file at %s",
-        "IgnoringRegistry": "No service endpoints that matched %s were found",
-        "ForcePackagingUrl": "Packaging collection url forced to: %s",
-        "CheckedInCredentialsOverriden": "Found and overrode credentials for the %s registry in the selected .npmrc file. Remove credentials from the file and store them in an npm Service Endpoint instead (recommended), or remove the npm Authenticate step from your build to use credentials checked into an .npmrc.",
-        "NoIndexJsonFile": "No index.json file was found and no files were restored",
-        "RevertedChangesToNpmrc" : "Reverted changes made to %s.",
-        "NpmrcDoesNotExist" : "The .npmrc file you selected at %s does not currently exist."
+    {
+      "name": "customRegistries",
+      "displayName": "Custom registries and authentication",
+      "isExpanded": false
     }
+  ],
+  "inputs": [
+    {
+      "name": "ProjectDirectory",
+      "type": "filePath",
+      "label": "Project Directory",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "Source directory"
+    },
+    {
+      "name": "Arguments",
+      "type": "string",
+      "label": "Arguments",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "Additionals arguments"
+    },
+    {
+      "name": "ProductionMode",
+      "type": "boolean",
+      "label": "Production Install",
+      "defaultValue": false,
+      "required": false,
+      "groupName": "install",
+      "helpMarkDown": "appends --production argument"
+    },
+    {
+      "groupName": "customRegistries",
+      "name": "customRegistry",
+      "label": "Registries to use",
+      "helpMarkDown": "You can either commit a .npmrc file to your source code repository and set its path here or select a registry from VSTS here.",
+      "type": "radio",
+      "options": {
+        "useNpmrc": "Registries in my .npmrc",
+        "useFeed": "Registry I select here"
+      },
+      "defaultValue": "useNpmrc"
+    },
+    {
+      "groupName": "customRegistries",
+      "name": "customFeed",
+      "label": "Use packages from this VSTS/TFS registry",
+      "helpMarkDown": "Include the selected feed in the generated .npmrc.",
+      "type": "pickList",
+      "visibleRule": "customRegistry = useFeed",
+      "required": true
+    },
+    {
+      "groupName": "customRegistries",
+      "name": "customEndpoint",
+      "label": "Credentials for registries outside this account/collection",
+      "helpMarkDown": "Credentials to use for external registries located in the project's .npmrc. For registries in this account/collection, leave this blank; the build’s credentials are used automatically.",
+      "type": "connectedService:externalnpmregistry",
+      "visibleRule": "customRegistry = useNpmrc",
+      "properties": {
+        "MultiSelectFlatList": "true"
+      }
+    }
+  ],
+  "dataSourceBindings": [
+    {
+      "target": "customFeed",
+      "endpointId": "tfs:feed",
+      "endpointUrl": "{{endpoint.url}}/_apis/packaging/feeds",
+      "resultSelector": "jsonpath:$.value[*]",
+      "resultTemplate": "{ \"Value\": \"{{{id}}}\", \"DisplayValue\": \"{{{name}}}\"}"
+    }
+  ],
+  "execution": {
+    "Node": {
+      "target": "yarnTask.js",
+      "argumentFormat": ""
+    }
+  },
+  "messages": {
+    "FoundBuildCredentials": "Found build credentials",
+    "NoBuildCredentials": "Could not find build credentials",
+    "ServiceEndpointNotDefined": "Couldn't find Service Endpoint, make sure the selected endpoint still exists.",
+    "NpmrcNotNpmrc": "The file you selected to authenticate (%s) is not a valid .npmrc file.",
+    "ServiceEndpointUrlNotDefined": "Couldn't find Url for Service Endpoint, make sure Service Endpoint is correctly configured.",
+    "SavingFile": "Saving file %s",
+    "RestoringFile": "Restoring file %s",
+    "AddingAuthRegistry": "Adding auth for registry: %s",
+    "FoundLocalRegistries": "Found %d registries in this account/collection",
+    "AddingLocalCredentials": "Adding credentials for a local registry",
+    "AddingEndpointCredentials": "Adding credentials for the %s endpoint",
+    "AuthenticatingThisNpmrc": "Adding authentication to the .npmrc file at %s",
+    "IgnoringRegistry": "No service endpoints that matched %s were found",
+    "ForcePackagingUrl": "Packaging collection url forced to: %s",
+    "CheckedInCredentialsOverriden": "Found and overrode credentials for the %s registry in the selected .npmrc file. Remove credentials from the file and store them in an npm Service Endpoint instead (recommended), or remove the npm Authenticate step from your build to use credentials checked into an .npmrc.",
+    "NoIndexJsonFile": "No index.json file was found and no files were restored",
+    "RevertedChangesToNpmrc": "Reverted changes made to %s.",
+    "NpmrcDoesNotExist": "The .npmrc file you selected at %s does not currently exist."
+  }
 }
