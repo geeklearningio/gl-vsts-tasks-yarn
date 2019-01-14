@@ -37,6 +37,7 @@ Please refer to our [release page](https://github.com/geeklearningio/gl-vsts-tas
 ## Contributors
 
 This extension was created by [Geek Learning](http://geeklearning.io/), with help from the community.
+It also uses some foundation code from [Azure pipelines Tasks](https://github.com/Microsoft/azure-pipelines-tasks).
 
 ## Attributions
 
