@@ -3,8 +3,10 @@ import * as fs from "fs-extra";
 import * as tl from "vsts-task-lib/task";
 import * as tr from "vsts-task-lib/toolrunner";
 import * as q from "q";
-import * as util from "npm-common/util";
-import { INpmRegistry, NpmRegistry } from "npm-common/npmregistry";
+import * as npmutil from "./packaging/npm/npmutil";
+import * as util from "./packaging/util";
+import { INpmRegistry, NpmRegistry } from "./packaging/npm/npmregistry";
+import { PackagingLocation, getPackagingUris, ProtocolType } from './packaging/locationUtilities';
 
 import { RegistryLocation } from "./constants";
 
@@ -66,10 +68,24 @@ async function yarnExec() {
             throw new Error("couldn't locate Yarn");
         }
 
+        let packagingLocation: PackagingLocation;
+        try {
+            packagingLocation = await getPackagingUris(ProtocolType.Npm);
+        } catch (error) {
+            tl.debug('Unable to get packaging URIs, using default collection URI');
+            tl.debug(JSON.stringify(error));
+            const collectionUrl = tl.getVariable('System.TeamFoundationCollectionUri');
+            packagingLocation = {
+                PackagingUris: [collectionUrl],
+                DefaultPackagingUri: collectionUrl
+            };
+        }
+
+
         tl.debug(yarnPath);
 
-        let npmrc = util.getTempNpmrcPath();
-        let npmRegistries: INpmRegistry[] = await util.getLocalNpmRegistries(projectPath);
+        let npmrc = npmutil.getTempNpmrcPath();
+        let npmRegistries: INpmRegistry[] = await npmutil.getLocalNpmRegistries(projectPath, packagingLocation.PackagingUris);
         let overrideNpmrc = fs.existsSync(projectNpmrc());
         let registryLocation = customRegistry;
 
@@ -83,13 +99,13 @@ async function yarnExec() {
             case RegistryLocation.Feed:
                 tl.debug("Using internal feed");
                 let feedId = tl.getInput("customFeed", true);
-                npmRegistries.push(await NpmRegistry.FromFeedId(feedId));
+                npmRegistries.push(await NpmRegistry.FromFeedId(packagingLocation.DefaultPackagingUri, feedId));
                 break;
             case RegistryLocation.Npmrc:
                 tl.debug("Using registries in .npmrc");
                 let endpointIds = tl.getDelimitedInput("customEndpoint", ",");
                 if (endpointIds && endpointIds.length > 0) {
-                    let endpointRegistries = endpointIds.map(e => NpmRegistry.FromServiceEndpoint(e, true));
+                    const endpointRegistries = await q.all(endpointIds.map(e => NpmRegistry.FromServiceEndpoint(e, true)));
                     npmRegistries = npmRegistries.concat(endpointRegistries);
                 }
                 break;
@@ -99,12 +115,12 @@ async function yarnExec() {
             if (registryLocation === RegistryLocation.Feed) {
                 // Don't clobber existing registry settings when getting registries from .npmrc
                 tl.debug("Using registry: " + registry.url);
-                util.appendToNpmrc(npmrc, `registry=${registry.url}\n`);
+                npmutil.appendToNpmrc(npmrc, `registry=${registry.url}\n`);
             }
             tl.debug("Adding auth for registry: " + registry.url);
-            util.appendToNpmrc(npmrc, `${registry.auth}\n`);
+            npmutil.appendToNpmrc(npmrc, `${registry.auth}\n`);
             if (registry.url.indexOf(".visualstudio.com") >= 0) {
-                util.appendToNpmrc(npmrc, "always-auth=true\n");
+                npmutil.appendToNpmrc(npmrc, "always-auth=true\n");
             }
         }
 
