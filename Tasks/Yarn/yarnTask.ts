@@ -64,9 +64,6 @@ async function yarnExec() {
 
         if (!yarnPath) {
             throw new Error("couldn't locate Yarn");
-            // var yarnDest = path.join(tl.getVariable("AGENT_WORKFOLDER"), 'yarn');
-            // await detar(path.join(__dirname, 'yarn-latest.tar.gz'), yarnDest);
-            // yarnPath = path.join(yarnDest, 'dist/bin/yarn' + (process.platform === 'win32' ? '.cmd' : ''));
         }
 
         tl.debug(yarnPath);
