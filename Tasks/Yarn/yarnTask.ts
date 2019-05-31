@@ -1,7 +1,7 @@
 import * as path from "path";
 import * as fs from "fs-extra";
-import * as tl from "vsts-task-lib/task";
-import * as tr from "vsts-task-lib/toolrunner";
+import * as tl from "azure-pipelines-task-lib/task";
+import * as tr from "azure-pipelines-task-lib/toolrunner";
 import * as q from "q";
 import * as npmutil from "./packaging/npm/npmutil";
 import * as util from "./packaging/util";

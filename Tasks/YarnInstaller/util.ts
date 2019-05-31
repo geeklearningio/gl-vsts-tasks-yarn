@@ -1,7 +1,7 @@
 let https = require("follow-redirects").https;
 import fs = require("fs");
 import q = require("q");
-import * as tl from "vsts-task-lib/task";
+import * as tl from "azure-pipelines-task-lib/task";
 import * as path from "path";
 import { IncomingMessage } from "http";
 let targz = require("yog-tar.gz");

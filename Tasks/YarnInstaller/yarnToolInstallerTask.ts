@@ -1,8 +1,8 @@
 import fs = require("fs-extra");
 import q = require("q");
-import * as tl from "vsts-task-lib/task";
+import * as tl from "azure-pipelines-task-lib/task";
 import * as path from "path";
-import * as toolLib from "vsts-task-tool-lib/tool";
+import * as toolLib from "azure-pipelines-tool-lib/tool";
 import { downloadFile, getTempPath, detar } from "./util";
 
 let yarnVersionsFile = path.join(getTempPath(), "yarnVersions.json");
