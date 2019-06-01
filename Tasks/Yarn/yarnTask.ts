@@ -12,8 +12,6 @@ import { RegistryLocation } from "./constants";
 
 tl.setResourcePath(path.join(__dirname, "task.json"));
 
-let targz = require("yog-tar.gz");
-
 let yarnPath = tl.which("yarn");
 let args = tl.getInput("Arguments");
 let projectPath = tl.getPathInput("ProjectDirectory");
@@ -23,20 +21,6 @@ let customEndpoint = tl.getInput("customEndpoint");
 
 function projectNpmrc(): string {
     return path.join(projectPath, ".npmrc");
-}
-
-function detar(source: string, dest: string): q.Promise<any> {
-    let deferral = q.defer<any>();
-
-    new targz().extract(source, dest, (err: any) => {
-        if (err) {
-            deferral.reject(err);
-        } else {
-            deferral.resolve();
-        }
-    });
-
-    return deferral.promise;
 }
 
 function saveProjectNpmrc(overrideProjectNpmrc: boolean): void {
