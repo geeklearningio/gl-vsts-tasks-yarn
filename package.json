@@ -34,16 +34,17 @@
   },
   "homepage": "https://github.com/geeklearningio/gl-vsts-tasks-yarn/vsts-tasks",
   "devDependencies": {
-    "@types/fs-extra": "^4.0.0",
-    "@types/ini": "^1.3.29",
-    "@types/q": "^1.0.3",
-    "@types/ltx": "^2.8.0",
-    "@types/node": "^10.12.9",
-    "async": "2.0.1",
-    "gl-vsts-tasks-build-scripts": "0.4.1",
-    "karma": "^1.1.2",
-    "npm-run-all": "2.3.0",
-    "tslint": "5.7.0",
-    "typescript": "^2.4.0"
+    "@types/fs-extra": "^7.0.0",
+    "@types/ini": "^1.3.30",
+    "@types/ltx": "^2.8.1",
+    "@types/node": "^12.0.4",
+    "@types/q": "^1.5.2",
+    "@types/tar": "^4.0.0",
+    "async": "3.0.1",
+    "gl-vsts-tasks-build-scripts": "0.5.0",
+    "karma": "^4.1.0",
+    "npm-run-all": "4.1.5",
+    "tslint": "5.17.0",
+    "typescript": "^3.5.1"
   }
 }

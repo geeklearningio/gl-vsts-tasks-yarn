@@ -99,7 +99,7 @@ async function yarnExec() {
             case RegistryLocation.Feed:
                 tl.debug("Using internal feed");
                 let feedId = tl.getInput("customFeed", true);
-                npmRegistries.push(await NpmRegistry.FromFeedId(packagingLocation.DefaultPackagingUri, feedId));
+                npmRegistries.push(await NpmRegistry.FromFeedId(packagingLocation.DefaultPackagingUri, feedId, null));
                 break;
             case RegistryLocation.Npmrc:
                 tl.debug("Using registries in .npmrc");
