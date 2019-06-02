@@ -110,19 +110,6 @@ async function yarnExec() {
         break;
     }
 
-    // for (let registry of npmRegistries) {
-    //   if (registryLocation === RegistryLocation.Feed) {
-    //     // Don't clobber existing registry settings when getting registries from .npmrc
-    //     tl.debug("Using registry: " + registry.url);
-    //     npmutil.appendToNpmrc(npmrc, `registry=${registry.url}\n`);
-    //   }
-    //   tl.debug("Adding auth for registry: " + registry.url);
-    //   npmutil.appendToNpmrc(npmrc, `${registry.auth}\n`);
-    //   if (registry.url.indexOf(".visualstudio.com") >= 0) {
-    //     npmutil.appendToNpmrc(npmrc, "always-auth=true\n");
-    //   }
-    // }
-
     for (const registry of npmRegistries) {
       if (registry.authOnly === false) {
         tl.debug(tl.loc("UsingRegistry", registry.url));
