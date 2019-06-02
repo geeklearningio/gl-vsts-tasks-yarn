@@ -76,7 +76,9 @@ async function yarnExec() {
 
     let registryLocation = customRegistry;
     const overrideNpmrc =
-      registryLocation === RegistryLocation.Feed ? true : false;
+      registryLocation === RegistryLocation.Feed
+        ? true
+        : !fs.existsSync(projectNpmrc());
 
     if (!overrideNpmrc) {
       fs.copySync(projectNpmrc(), npmrc);
