@@ -1,6 +1,6 @@
 const fstream: any = require("fstream");
 import { createGunzip } from "zlib";
-import { Extract as tarExtract } from "tar";
+import { extract as tarExtract } from "tar";
 
 export const extract = (
   source: string,

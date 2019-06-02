@@ -1,53 +1,51 @@
 {
-    "id": "57066373-3f34-492b-941a-d66dd6b079c4",
-    "name": "YarnInstaller",
-    "friendlyName": "Yarn Tool Installer",
-    "description": "Installs a version of Yarn",
-    "helpMarkDown": "[More Information](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn) (Version #{Version}#)",
-    "category": "Utility",
-    "visibility": [
-        "Build",
-        "Release"
-    ],
-    "author": "Geek Learning",
-    "version": {
-        "Major": 0,
-        "Minor": 0,
-        "Patch": 0
+  "id": "57066373-3f34-492b-941a-d66dd6b079c4",
+  "name": "YarnInstaller",
+  "friendlyName": "Yarn Tool Installer",
+  "description": "Installs a version of Yarn",
+  "helpMarkDown": "[More Information](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn) (Version #{Version}#)",
+  "category": "Utility",
+  "visibility": ["Build", "Release"],
+  "author": "Geek Learning",
+  "version": {
+    "Major": 0,
+    "Minor": 0,
+    "Patch": 0
+  },
+  "minimumAgentVersion": "2.117.0",
+  "groups": [],
+  "satisfies": ["yarn"],
+  "instanceNameFormat": "Use Yarn $(versionSpec)",
+  "inputs": [
+    {
+      "name": "versionSpec",
+      "type": "string",
+      "label": "Version of Yarn to install",
+      "defaultValue": "1.x",
+      "required": true,
+      "helpMarkDown": "A version or version range that specifies the Yarn version to make available on the path. Use x as a wildcard. See the [list of available Yarn versions](https://github.com/yarnpkg/yarn/releases)."
     },
-    "minimumAgentVersion": "1.91.0",
-    "groups": [],
-    "satisfies": ["yarn"],
-    "instanceNameFormat": "Use Yarn $(versionSpec)",
-    "inputs": [{
-        "name": "versionSpec",
-        "type": "string",
-        "label": "Version of Yarn to install",
-        "defaultValue": "1.x",
-        "required": true,
-        "helpMarkDown": "A version or version range that specifies the Yarn version to make available on the path. Use x as a wildcard. See the [list of available Yarn versions](https://github.com/yarnpkg/yarn/releases)."
-        },
-        {
-            "name": "checkLatest",
-            "type": "boolean",
-            "label": "Always download the latest matching version",
-            "defaultValue": "false",
-            "required": false,
-            "helpMarkDown": "Always check for and download the latest available version of Yarn which satisfies the version spec. This option will also always incur download time, even if the selected version of Yarn is already cached.\n\nEnabling this option could cause unexpected build breaks when a new version of Yarn is released."
-        },
-        {
-            "name": "includePrerelease",
-            "type": "boolean",
-            "label": "Include prereleases",
-            "defaultValue": "false",
-            "required": false,
-            "helpMarkDown": "If set releases marked as prereleases will be included. We recommand you don't set this unless you need it and you have a more restrictive version pattern such as ex: 1.7.x. Also, this parameter does not affect explicit version patterns ex: 1.7.1."
-        }
-    ],
-    "execution": {
-        "Node": {
-            "target": "yarnToolInstallerTask.js",
-            "argumentFormat": ""
-        }
+    {
+      "name": "checkLatest",
+      "type": "boolean",
+      "label": "Always download the latest matching version",
+      "defaultValue": "false",
+      "required": false,
+      "helpMarkDown": "Always check for and download the latest available version of Yarn which satisfies the version spec. This option will also always incur download time, even if the selected version of Yarn is already cached.\n\nEnabling this option could cause unexpected build breaks when a new version of Yarn is released."
+    },
+    {
+      "name": "includePrerelease",
+      "type": "boolean",
+      "label": "Include prereleases",
+      "defaultValue": "false",
+      "required": false,
+      "helpMarkDown": "If set releases marked as prereleases will be included. We recommand you don't set this unless you need it and you have a more restrictive version pattern such as ex: 1.7.x. Also, this parameter does not affect explicit version patterns ex: 1.7.1."
     }
+  ],
+  "execution": {
+    "Node": {
+      "target": "yarnToolInstallerTask.js",
+      "argumentFormat": ""
+    }
+  }
 }
