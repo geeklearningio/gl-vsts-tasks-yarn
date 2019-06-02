@@ -4,7 +4,8 @@ import q = require("q");
 import * as tl from "azure-pipelines-task-lib/task";
 import * as path from "path";
 import { IncomingMessage } from "http";
-import { extract } from "./detar";
+// import { extract } from "./detar";
+import { extract as tarExtract, extract } from "tar";
 
 export function downloadFile(url: string, dest: string): q.Promise<any> {
   let deferal = q.defer<any>();
@@ -36,10 +37,15 @@ export function getTempPath(): string {
   return tempPath;
 }
 
-export function detar(source: string, dest: string): q.Promise<any> {
-  let deferral = q.defer<any>();
+export function detar(source: string, dest: string): PromiseLike<any> {
+  // let deferral = q.defer<any>();
 
-  extract(source, dest, () => deferral.resolve(), err => deferral.reject(err));
+  return extract({ file: source, cwd: dest });
 
-  return deferral.promise;
+  // return extract({ file: source, cwd: dest })
+  //   .then(() => deferral.resolve())
+  //   .catch(() => deferral.reject());
+  // extract(source, dest, () => deferral.resolve(), err => deferral.reject(err));
+
+  //return deferral.promise;
 }
