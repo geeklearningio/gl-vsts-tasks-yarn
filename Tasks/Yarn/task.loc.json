@@ -12,6 +12,7 @@
     "Minor": 0,
     "Patch": 1
   },
+  "preview": true,
   "runsOn": ["Agent", "DeploymentGroup"],
   "demands": ["yarn"],
   "minimumAgentVersion": "1.91.0",
@@ -30,7 +31,7 @@
   ],
   "inputs": [
     {
-      "name": "ProjectDirectory",
+      "name": "projectDirectory",
       "type": "filePath",
       "label": "Project Directory",
       "defaultValue": "",
@@ -38,7 +39,7 @@
       "helpMarkDown": "Source directory"
     },
     {
-      "name": "Arguments",
+      "name": "arguments",
       "type": "string",
       "label": "Arguments",
       "defaultValue": "",
@@ -46,7 +47,7 @@
       "helpMarkDown": "Additionals arguments"
     },
     {
-      "name": "ProductionMode",
+      "name": "productionMode",
       "type": "boolean",
       "label": "Production Install",
       "defaultValue": false,

@@ -17,8 +17,8 @@ import { RegistryLocation } from "./constants";
 tl.setResourcePath(path.join(__dirname, "task.json"));
 
 let yarnPath = tl.which("yarn");
-let args = tl.getInput("Arguments");
-let projectPath = tl.getPathInput("ProjectDirectory");
+let args = tl.getInput("arguments");
+let projectPath = tl.getPathInput("projectDirectory");
 let customRegistry = tl.getInput("customRegistry");
 let customFeed = tl.getInput("customFeed");
 let customEndpoint = tl.getInput("customEndpoint");
