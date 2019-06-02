@@ -127,6 +127,9 @@ async function yarnExec() {
       if (registry.authOnly === false) {
         tl.debug(tl.loc("UsingRegistry", registry.url));
         npmutil.appendToNpmrc(npmrc, `registry=${registry.url}\n`);
+        if (registry.auth) {
+          npmutil.appendToNpmrc(npmrc, `always-auth=true\n`);
+        }
       }
 
       tl.debug(tl.loc("AddingAuthRegistry", registry.url));
