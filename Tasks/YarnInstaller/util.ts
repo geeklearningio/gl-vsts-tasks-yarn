@@ -34,13 +34,15 @@ function saveResponseToFile(
 }
 
 export async function downloadFile(url: string, dest: string): Promise<void> {
+  tl.debug(`downloading: ${url}`);
   let response = await httpsGet(url);
-
   while (
     (response.statusCode >= 301 && response.statusCode <= 303) ||
     response.statusCode == 307
   ) {
-    response = await httpsGet(response.headers["Location"] as string);
+    const location = response.headers["location"] as string;
+    tl.debug(`following redirect to location: ${location}`);
+    response = await httpsGet(location);
   }
 
   await saveResponseToFile(response, dest);
