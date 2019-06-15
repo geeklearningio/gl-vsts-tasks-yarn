@@ -11,9 +11,8 @@
     "prebuild": "vsts-build-tools-prebuild",
     "build": "tsc",
     "package": "vsts-build-tools-package",
-    "build:test": "run-s build test",
-    "test": "jasmine JASMINE_CONFIG_PATH=./Tests/jasmine.json",
-    "test:chutzpah": "chutzpah.console ./Tests",
+    "test": "run-s build test:no-build",
+    "test:no-build": "node test.js",
     "fix:prettier": "prettier Tasks/**/*.ts --write",
     "lint": "eslint Tasks/**/*.ts"
   },
@@ -40,6 +39,7 @@
     "@types/ini": "^1.3.30",
     "@types/ltx": "^2.8.1",
     "@types/node": "^12.0.4",
+    "@types/jasmine": "3.3.13",
     "@types/q": "^1.5.2",
     "@types/tar": "^4.0.0",
     "@typescript-eslint/eslint-plugin": "^1.9.0",
@@ -53,11 +53,14 @@
     "prettier": "1.17.1",
     "pretty-quick": "^1.11.0",
     "tslint": "5.17.0",
-    "typescript": "^3.5.1"
+    "typescript": "^3.5.1",
+    "jasmine-reporters": "2.3.2",
+    "jasmine": "3.4.0"
   },
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"
     }
-  }
+  },
+  "dependencies": {}
 }

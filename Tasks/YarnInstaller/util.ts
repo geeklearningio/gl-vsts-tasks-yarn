@@ -4,20 +4,7 @@ import * as tl from "azure-pipelines-task-lib/task";
 import * as path from "path";
 import { IncomingMessage } from "http";
 import { extract } from "tar";
-import * as https from "https";
-
-function httpsGet(url: string): PromiseLike<IncomingMessage> {
-  const deferal = q.defer<IncomingMessage>();
-  https
-    .get(url, (response: IncomingMessage) => {
-      deferal.resolve(response);
-    })
-    .on("error", (err: Error) => {
-      deferal.reject(err);
-    });
-
-  return deferal.promise;
-}
+import { downloadFrom } from "./download";
 
 function saveResponseToFile(
   response: IncomingMessage,
@@ -35,15 +22,10 @@ function saveResponseToFile(
 
 export async function downloadFile(url: string, dest: string): Promise<void> {
   tl.debug(`downloading: ${url}`);
-  let response = await httpsGet(url);
-  while (
-    (response.statusCode >= 301 && response.statusCode <= 303) ||
-    response.statusCode == 307
-  ) {
-    const location = response.headers["location"] as string;
-    tl.debug(`following redirect to location: ${location}`);
-    response = await httpsGet(location);
-  }
+
+  const response = await downloadFrom(url, location =>
+    tl.debug(`following redirect to location: ${location}`)
+  );
 
   await saveResponseToFile(response, dest);
 }
