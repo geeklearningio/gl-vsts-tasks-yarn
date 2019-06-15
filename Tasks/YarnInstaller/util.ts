@@ -1,26 +1,49 @@
-let https = require("follow-redirects").https;
 import fs = require("fs");
 import q = require("q");
 import * as tl from "azure-pipelines-task-lib/task";
 import * as path from "path";
 import { IncomingMessage } from "http";
 import { extract } from "tar";
+import * as https from "https";
 
-export function downloadFile(url: string, dest: string): q.Promise<any> {
-  let deferal = q.defer<any>();
-  let file = fs.createWriteStream(dest);
-  let request = https
+function httpsGet(url: string): PromiseLike<IncomingMessage> {
+  const deferal = q.defer<IncomingMessage>();
+  https
     .get(url, (response: IncomingMessage) => {
-      response.pipe(file);
-      file.on("finish", () => {
-        deferal.resolve();
-      });
+      deferal.resolve(response);
     })
-    .on("error", (err: any) => {
+    .on("error", (err: Error) => {
       deferal.reject(err);
     });
 
   return deferal.promise;
+}
+
+function saveResponseToFile(
+  response: IncomingMessage,
+  dest: string
+): PromiseLike<void> {
+  const deferal = q.defer<void>();
+  const file = fs.createWriteStream(dest);
+
+  response.pipe(file);
+  file.on("finish", () => {
+    deferal.resolve();
+  });
+  return deferal.promise;
+}
+
+export async function downloadFile(url: string, dest: string): Promise<void> {
+  let response = await httpsGet(url);
+
+  while (
+    (response.statusCode >= 301 && response.statusCode <= 303) ||
+    response.statusCode == 307
+  ) {
+    response = await httpsGet(response.headers["Location"] as string);
+  }
+
+  await saveResponseToFile(response, dest);
 }
 
 export function getTempPath(): string {
@@ -36,6 +59,6 @@ export function getTempPath(): string {
   return tempPath;
 }
 
-export function detar(source: string, dest: string): PromiseLike<any> {
+export function detar(source: string, dest: string): PromiseLike<void> {
   return extract({ file: source, cwd: dest });
 }

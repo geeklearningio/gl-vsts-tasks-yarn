@@ -20,8 +20,6 @@ let yarnPath = tl.which("yarn");
 let args = tl.getInput("arguments");
 let projectPath = tl.getPathInput("projectDirectory");
 let customRegistry = tl.getInput("customRegistry");
-let customFeed = tl.getInput("customFeed");
-let customEndpoint = tl.getInput("customEndpoint");
 
 function projectNpmrc(): string {
   return path.join(projectPath, ".npmrc");
@@ -45,7 +43,7 @@ function restoreProjectNpmrc(overrideProjectNpmrc: boolean): void {
   }
 }
 
-async function yarnExec() {
+async function yarnExec(): Promise<void> {
   try {
     if (!yarnPath) {
       throw new Error("couldn't locate Yarn");
@@ -133,7 +131,7 @@ async function yarnExec() {
 
     let options: tr.IExecOptions = {
       cwd: projectPath,
-      env: <any>process.env,
+      env: process.env,
       silent: false,
       failOnStdErr: false,
       ignoreReturnCode: false,

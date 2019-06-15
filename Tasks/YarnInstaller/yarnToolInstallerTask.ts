@@ -1,5 +1,4 @@
 import fs = require("fs-extra");
-import q = require("q");
 import * as tl from "azure-pipelines-task-lib/task";
 import * as path from "path";
 import * as toolLib from "azure-pipelines-tool-lib/tool";
@@ -15,9 +14,9 @@ async function queryLatestMatch(
     "https://publicblobs.geeklearning.io/yarn/tarballsV2.json",
     yarnVersionsFile
   );
-  let yarnVersions = <
-    { [key: string]: { uri: string; isPrerelease: boolean } }
-  >JSON.parse(fs.readFileSync(yarnVersionsFile, { encoding: "utf8" }));
+  let yarnVersions = JSON.parse(
+    fs.readFileSync(yarnVersionsFile, { encoding: "utf8" })
+  ) as { [key: string]: { uri: string; isPrerelease: boolean } };
   let versionsCodes = Object.keys(yarnVersions);
   if (!includePrerelease) {
     versionsCodes = versionsCodes.filter(v => !yarnVersions[v].isPrerelease);
@@ -32,7 +31,10 @@ async function queryLatestMatch(
   return { version: version, url: yarnVersions[version].uri };
 }
 
-async function downloadYarn(version: { version: string; url: string }) {
+async function downloadYarn(version: {
+  version: string;
+  url: string;
+}): Promise<string> {
   let cleanVersion = toolLib.cleanVersion(version.version);
 
   let downloadPath: string = path.join(
@@ -52,7 +54,7 @@ async function getYarn(
   versionSpec: string,
   checkLatest: boolean,
   includePrerelease: boolean
-) {
+): Promise<void> {
   if (toolLib.isExplicitVersion(versionSpec)) {
     checkLatest = false; // check latest doesn't make sense when explicit version
   }
@@ -111,7 +113,7 @@ async function getYarn(
   toolLib.prependPath(toolPath);
 }
 
-async function run() {
+async function run(): Promise<void> {
   try {
     let versionSpec = tl.getInput("versionSpec", true);
     let checkLatest: boolean = tl.getBoolInput("checkLatest", false);
