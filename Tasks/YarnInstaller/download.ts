@@ -1,11 +1,21 @@
 import * as https from "https";
+import * as HttpsProxyAgent from "https-proxy-agent";
 import q = require("q");
 import { IncomingMessage } from "http";
 
 function httpsGet(url: string): PromiseLike<IncomingMessage> {
   const deferal = q.defer<IncomingMessage>();
+
+  const options: https.RequestOptions = {};
+
+  var proxy = process.env.https_proxy;
+
+  if (proxy != null) {
+    options.agent = new HttpsProxyAgent(proxy);
+  }
+
   https
-    .get(url, (response: IncomingMessage) => {
+    .get(url, options, (response: IncomingMessage) => {
       deferal.resolve(response);
     })
     .on("error", (err: Error) => {
