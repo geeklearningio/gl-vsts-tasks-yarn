@@ -18,7 +18,7 @@ tl.setResourcePath(path.join(__dirname, "task.json"));
 
 let yarnPath = tl.which("yarn");
 let args = tl.getInput("arguments");
-let projectPath = tl.getPathInput("projectDirectory");
+let projectPath = tl.getPathInput("projectDirectory") || process.cwd();
 let customRegistry = tl.getInput("customRegistry");
 
 function projectNpmrc(): string {

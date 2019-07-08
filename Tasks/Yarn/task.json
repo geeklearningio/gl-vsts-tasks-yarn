@@ -34,7 +34,6 @@
       "name": "projectDirectory",
       "type": "filePath",
       "label": "Project Directory",
-      "defaultValue": "",
       "required": false,
       "helpMarkDown": "Source directory"
     },
