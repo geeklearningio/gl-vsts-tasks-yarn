@@ -8,9 +8,13 @@ function httpsGet(url: string): PromiseLike<IncomingMessage> {
 
   const options: https.RequestOptions = {};
 
-  var proxy = process.env.https_proxy;
+  var proxy = // Azure DevOps transforms all variables to uppercase
+    process.env.HTTPS_PROXY ||
+    process.env.https_proxy ||
+    process.env.HTTP_PROXY ||
+    process.env.http_proxy;
 
-  if (proxy != null) {
+  if (proxy !== null && proxy !== undefined) {
     options.agent = new HttpsProxyAgent(proxy);
   }
 
