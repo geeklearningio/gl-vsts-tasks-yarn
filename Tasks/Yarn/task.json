@@ -12,7 +12,6 @@
     "Minor": 0,
     "Patch": 0
   },
-  "preview": true,
   "runsOn": ["Agent", "DeploymentGroup"],
   "demands": ["yarn"],
   "minimumAgentVersion": "1.91.0",
