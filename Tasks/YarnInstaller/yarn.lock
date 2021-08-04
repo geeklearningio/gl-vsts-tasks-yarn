@@ -125,9 +125,9 @@ minimist@0.0.8:
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.0.8.tgz#857fcabfc3397d2625b8228262e86aa7a011b05d"
 
-minipass@^2.2.1, minipass@^2.3.5:
-  version "2.3.5"
-  resolved "https://registry.yarnpkg.com/minipass/-/minipass-2.3.5.tgz#cacebe492022497f656b0f0f51e2682a9ed2d848"
+minipass@^2.2.1, minipass@^2.8.6:
+  version "2.9.0"
+  resolved "https://www.myget.org/F/gl-unstable/npm/minipass/-/minipass-2.9.0.tgz#e713762e7d3e32fed803115cf93e04bca9fcc9a6"
   dependencies:
     safe-buffer "^5.1.2"
     yallist "^3.0.0"
@@ -172,13 +172,13 @@ shelljs@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.3.0.tgz#3596e6307a781544f591f37da618360f31db57b1"
 
-tar@4.4.9:
-  version "4.4.9"
-  resolved "https://registry.yarnpkg.com/tar/-/tar-4.4.9.tgz#058fbb152f6fc45733e84585a40c39e59302e1b3"
+tar@4.4.15:
+  version "4.4.15"
+  resolved "https://www.myget.org/F/gl-unstable/npm/tar/-/tar-4.4.15.tgz#3caced4f39ebd46ddda4d6203d48493a919697f8"
   dependencies:
     chownr "^1.1.1"
     fs-minipass "^1.2.5"
-    minipass "^2.3.5"
+    minipass "^2.8.6"
     minizlib "^1.2.1"
     mkdirp "^0.5.0"
     safe-buffer "^5.1.2"
