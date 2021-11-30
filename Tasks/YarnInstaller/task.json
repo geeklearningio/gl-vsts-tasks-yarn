@@ -46,6 +46,10 @@
     "Node": {
       "target": "yarnToolInstallerTask.js",
       "argumentFormat": ""
+    },
+    "Node10": {
+      "target": "yarnToolInstallerTask.js",
+      "argumentFormat": ""
     }
   }
 }
