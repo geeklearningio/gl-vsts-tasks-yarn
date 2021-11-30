@@ -101,6 +101,10 @@
     "Node": {
       "target": "yarnTask.js",
       "argumentFormat": ""
+    },
+    "Node10": {
+      "target": "yarnTask.js",
+      "argumentFormat": ""
     }
   },
   "messages": {
