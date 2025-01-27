@@ -50,6 +50,10 @@
     "Node10": {
       "target": "yarnToolInstallerTask.js",
       "argumentFormat": ""
+    },
+    "Node20_1": {
+      "target": "yamlPatch.js",
+      "argumentFormat": ""
     }
   }
 }

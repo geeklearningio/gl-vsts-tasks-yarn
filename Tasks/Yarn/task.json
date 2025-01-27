@@ -103,6 +103,10 @@
     "Node10": {
       "target": "yarnTask.js",
       "argumentFormat": ""
+    },
+    "Node20_1": {
+      "target": "yamlPatch.js",
+      "argumentFormat": ""
     }
   },
   "messages": {
