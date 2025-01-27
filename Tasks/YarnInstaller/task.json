@@ -52,7 +52,7 @@
       "argumentFormat": ""
     },
     "Node20_1": {
-      "target": "yamlPatch.js",
+      "target": "yarnToolInstallerTask.js",
       "argumentFormat": ""
     }
   }

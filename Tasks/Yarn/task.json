@@ -105,7 +105,7 @@
       "argumentFormat": ""
     },
     "Node20_1": {
-      "target": "yamlPatch.js",
+      "target": "yarnTask.js",
       "argumentFormat": ""
     }
   },
