@@ -27,7 +27,7 @@ export class NpmRegistry implements INpmRegistry {
 
   public static async FromServiceEndpoint(
     endpointId: string,
-    authOnly?: boolean
+    authOnly?: boolean,
   ): Promise<NpmRegistry> {
     const lineEnd = os.EOL;
     let endpointAuth: tl.EndpointAuthorization;
@@ -41,7 +41,7 @@ export class NpmRegistry implements INpmRegistry {
     let isVstsTokenAuth: boolean = false;
     try {
       endpointAuth = tl.getEndpointAuthorization(endpointId, false);
-    } catch (exception) {
+    } catch {
       throw new Error(tl.loc("ServiceEndpointNotDefined"));
     }
 
@@ -53,7 +53,7 @@ export class NpmRegistry implements INpmRegistry {
         isVstsTokenAuth = await NpmRegistry.isEndpointInternal(url);
       }
       nerfed = util.toNerfDart(url);
-    } catch (exception) {
+    } catch {
       throw new Error(tl.loc("ServiceEndpointUrlNotDefined"));
     }
 
@@ -62,7 +62,7 @@ export class NpmRegistry implements INpmRegistry {
         username = endpointAuth.parameters["username"];
         password = endpointAuth.parameters["password"];
         email = username; // npm needs an email to be set in order to publish, this is ignored on npmjs
-        password64 = new Buffer(password).toString("base64");
+        password64 = Buffer.from(password).toString("base64");
         tl.setSecret(password64);
 
         auth = nerfed + ":username=" + username + lineEnd;
@@ -78,7 +78,7 @@ export class NpmRegistry implements INpmRegistry {
           // Azure DevOps does not support PATs+Bearer only JWTs+Bearer
           email = "VssEmail";
           username = "VssToken";
-          password64 = new Buffer(apitoken).toString("base64");
+          password64 = Buffer.from(apitoken).toString("base64");
           tl.setSecret(password64);
 
           auth = nerfed + ":username=" + username + lineEnd;
@@ -95,7 +95,7 @@ export class NpmRegistry implements INpmRegistry {
   // make a request to the endpoint uri, and take a look at the response header to
   // determine whether this is our service, or an external service.
   private static async isEndpointInternal(
-    endpointUri: string
+    endpointUri: string,
   ): Promise<boolean> {
     let requestOptions: IRequestOptions;
     try {
@@ -112,16 +112,16 @@ export class NpmRegistry implements INpmRegistry {
     const endpointClient = new HttpClient(
       tl.getVariable("AZURE_HTTP_USER_AGENT"),
       null,
-      requestOptions
+      requestOptions,
     );
     try {
       const resp = await endpointClient.get(endpointUri, headers);
       return (
         resp.message.rawHeaders !== null &&
         resp.message.rawHeaders.some(
-          t =>
+          (t) =>
             t.toLowerCase().indexOf("x-tfs") >= 0 ||
-            t.toLowerCase().indexOf("x-vss") >= 0
+            t.toLowerCase().indexOf("x-vss") >= 0,
         )
       );
     } catch (error) {
@@ -135,7 +135,7 @@ export class NpmRegistry implements INpmRegistry {
     feedId: string,
     project: string,
     authOnly?: boolean,
-    useSession?: boolean
+    useSession?: boolean,
   ): Promise<NpmRegistry> {
     const url = NormalizeRegistry(
       await locationUtil.getFeedRegistryUrl(
@@ -144,8 +144,8 @@ export class NpmRegistry implements INpmRegistry {
         feedId,
         project,
         null,
-        useSession
-      )
+        useSession,
+      ),
     );
     return NpmRegistry.FromUrl(url, authOnly);
   }

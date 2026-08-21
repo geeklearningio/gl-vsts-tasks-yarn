@@ -5,13 +5,13 @@ import * as tl from "azure-pipelines-task-lib/task";
 
 export function GetRegistries(
   npmrc: string,
-  saveNormalizedRegistries: boolean
+  saveNormalizedRegistries: boolean,
 ): string[] {
-  let registries: string[] = [];
-  let config = ini.parse(fs.readFileSync(npmrc).toString());
+  const registries: string[] = [];
+  const config = ini.parse(fs.readFileSync(npmrc).toString());
 
-  for (let key in config) {
-    let colonIndex = key.indexOf(":");
+  for (const key in config) {
+    const colonIndex = key.indexOf(":");
     if (key.substring(colonIndex + 1).toLowerCase() === "registry") {
       config[key] = NormalizeRegistry(config[key]);
       registries.push(config[key]);

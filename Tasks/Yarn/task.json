@@ -2,8 +2,8 @@
   "id": "57066373-3f34-492b-941a-d66dd6b079c4",
   "name": "Yarn",
   "friendlyName": "Yarn task",
-  "description": "Executes Yarn",
-  "helpMarkDown": "[More Information](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn) (Version #{Version}#).\n\nDear Angular and Ember CLI users, please check our [known issues](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Known-Issues)",
+  "description": "[DEPRECATED - unmaintained] Executes Yarn 1.x (Classic)",
+  "helpMarkDown": "**⚠️ Deprecated and unmaintained.** This extension receives no further updates. Yarn 1.x is already available in the standard hosted agent images, and Yarn 2 and later can be enabled with `corepack enable`. For feed authentication use the built-in npm authenticate task. [Migration notes](https://github.com/geeklearningio/gl-vsts-tasks-yarn#migrating-off-this-extension).\n\n[More Information](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn) (Version #{Version}#).\n\nDear Angular and Ember CLI users, please check our [known issues](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Known-Issues)",
   "category": "Utility",
   "author": "Geek Learning",
   "visibility": ["Build", "Release"],
@@ -14,7 +14,7 @@
   },
   "runsOn": ["Agent", "DeploymentGroup"],
   "demands": ["yarn"],
-  "minimumAgentVersion": "1.91.0",
+  "minimumAgentVersion": "3.232.1",
   "instanceNameFormat": "Yarn $(Arguments)",
   "groups": [
     {
@@ -96,14 +96,6 @@
     }
   ],
   "execution": {
-    "Node": {
-      "target": "yarnTask.js",
-      "argumentFormat": ""
-    },
-    "Node10": {
-      "target": "yarnTask.js",
-      "argumentFormat": ""
-    },
     "Node20_1": {
       "target": "yarnTask.js",
       "argumentFormat": ""

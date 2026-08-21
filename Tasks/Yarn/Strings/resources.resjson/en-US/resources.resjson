@@ -1,7 +1,7 @@
 {
   "loc.friendlyName": "Yarn task",
-  "loc.helpMarkDown": "[More Information](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn) (Version #{Version}#).\n\nDear Angular and Ember CLI users, please check our [known issues](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Known-Issues)",
-  "loc.description": "Executes Yarn",
+  "loc.helpMarkDown": "**⚠️ Deprecated and unmaintained.** This extension receives no further updates. Yarn 1.x is already available in the standard hosted agent images, and Yarn 2 and later can be enabled with `corepack enable`. For feed authentication use the built-in npm authenticate task. [Migration notes](https://github.com/geeklearningio/gl-vsts-tasks-yarn#migrating-off-this-extension).\n\n[More Information](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn) (Version #{Version}#).\n\nDear Angular and Ember CLI users, please check our [known issues](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Known-Issues)",
+  "loc.description": "[DEPRECATED - unmaintained] Executes Yarn 1.x (Classic)",
   "loc.instanceNameFormat": "Yarn $(Arguments)",
   "loc.messages.FoundBuildCredentials": "Found build credentials",
   "loc.messages.NoBuildCredentials": "Could not find build credentials",

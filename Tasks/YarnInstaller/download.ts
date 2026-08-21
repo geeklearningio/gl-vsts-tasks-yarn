@@ -1,37 +1,34 @@
 import * as https from "https";
-import * as HttpsProxyAgent from "https-proxy-agent";
-import q = require("q");
+import { HttpsProxyAgent } from "https-proxy-agent";
 import { IncomingMessage } from "http";
 
-function httpsGet(url: string): PromiseLike<IncomingMessage> {
-  const deferal = q.defer<IncomingMessage>();
+function httpsGet(url: string): Promise<IncomingMessage> {
+  return new Promise<IncomingMessage>((resolve, reject) => {
+    const options: https.RequestOptions = {};
 
-  const options: https.RequestOptions = {};
+    const proxy = // Azure DevOps transforms all variables to uppercase
+      process.env.HTTPS_PROXY ||
+      process.env.https_proxy ||
+      process.env.HTTP_PROXY ||
+      process.env.http_proxy;
 
-  var proxy = // Azure DevOps transforms all variables to uppercase
-    process.env.HTTPS_PROXY ||
-    process.env.https_proxy ||
-    process.env.HTTP_PROXY ||
-    process.env.http_proxy;
+    if (proxy !== null && proxy !== undefined) {
+      options.agent = new HttpsProxyAgent(proxy);
+    }
 
-  if (proxy !== null && proxy !== undefined) {
-    options.agent = new HttpsProxyAgent(proxy);
-  }
-
-  https
-    .get(url, options, (response: IncomingMessage) => {
-      deferal.resolve(response);
-    })
-    .on("error", (err: Error) => {
-      deferal.reject(err);
-    });
-
-  return deferal.promise;
+    https
+      .get(url, options, (response: IncomingMessage) => {
+        resolve(response);
+      })
+      .on("error", (err: Error) => {
+        reject(err);
+      });
+  });
 }
 
 export async function downloadFrom(
   url: string,
-  logRedirect?: (location: string) => void
+  logRedirect?: (location: string) => void,
 ): Promise<IncomingMessage> {
   let response = await httpsGet(url);
   while (
@@ -39,7 +36,9 @@ export async function downloadFrom(
     response.statusCode == 307
   ) {
     const location = response.headers["location"] as string;
-    logRedirect && logRedirect(location);
+    if (logRedirect) {
+      logRedirect(location);
+    }
     response = await httpsGet(location);
   }
 

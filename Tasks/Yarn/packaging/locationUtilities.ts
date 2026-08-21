@@ -9,7 +9,7 @@ export enum ProtocolType {
   NuGet,
   Maven,
   Npm,
-  PyPi
+  PyPi,
 }
 
 export enum RegistryType {
@@ -17,7 +17,7 @@ export enum RegistryType {
   NuGetV2,
   NuGetV3,
   PyPiSimple,
-  PyPiUpload
+  PyPiUpload,
 }
 
 export interface PackagingLocation {
@@ -29,7 +29,7 @@ export interface PackagingLocation {
 export async function getServiceUriFromAreaId(
   serviceUri: string,
   accessToken: string,
-  areaId: string
+  areaId: string,
 ): Promise<string> {
   const serverType = tl.getVariable("System.ServerType");
   if (!serverType || serverType.toLowerCase() !== "hosted") {
@@ -50,7 +50,7 @@ export async function getServiceUriFromAreaId(
 
 export async function getNuGetUriFromBaseServiceUri(
   serviceUri: string,
-  accesstoken: string
+  accesstoken: string,
 ): Promise<string> {
   const nugetAreaId = "B3BE7473-68EA-4A81-BFC7-9530BAAA19AD";
 
@@ -60,7 +60,7 @@ export async function getNuGetUriFromBaseServiceUri(
 // Feeds url from location service
 export async function getFeedUriFromBaseServiceUri(
   serviceUri: string,
-  accesstoken: string
+  accesstoken: string,
 ): Promise<string> {
   const feedAreaId = "7ab4e64e-c4d8-4f50-ae73-5ef2e21642a5";
 
@@ -69,7 +69,7 @@ export async function getFeedUriFromBaseServiceUri(
 
 export async function getBlobstoreUriFromBaseServiceUri(
   serviceUri: string,
-  accesstoken: string
+  accesstoken: string,
 ): Promise<string> {
   const blobAreaId = "5294ef93-12a1-4d13-8671-9d9d014072c8";
 
@@ -83,14 +83,14 @@ export async function getBlobstoreUriFromBaseServiceUri(
  *  The remaining URI's will be alternate Packaging's access points
  */
 export async function getPackagingUris(
-  protocolType: ProtocolType
+  protocolType: ProtocolType,
 ): Promise<PackagingLocation> {
   tl.debug("Getting Packaging service access points");
   const collectionUrl = tl.getVariable("System.TeamFoundationCollectionUri");
 
   const pkgLocation: PackagingLocation = {
     PackagingUris: [collectionUrl],
-    DefaultPackagingUri: collectionUrl
+    DefaultPackagingUri: collectionUrl,
   };
 
   const serverType = tl.getVariable("System.ServerType");
@@ -104,7 +104,7 @@ export async function getPackagingUris(
   const serviceUri = await getServiceUriFromAreaId(
     collectionUrl,
     accessToken,
-    areaId
+    areaId,
   );
 
   const webApi = getWebApiWithProxy(serviceUri);
@@ -114,22 +114,23 @@ export async function getPackagingUris(
   tl.debug("Acquiring Packaging endpoints from " + serviceUri);
 
   const connectionData = await locationApi.getConnectionData(
-    interfaces.ConnectOptions.IncludeServices
+    interfaces.ConnectOptions.IncludeServices,
   );
 
   tl.debug("Successfully acquired the connection data");
-  const defaultAccessPoint: string = connectionData.locationServiceData.accessMappings.find(
-    mapping =>
-      mapping.moniker ===
-      connectionData.locationServiceData.defaultAccessMappingMoniker
-  ).accessPoint;
+  const defaultAccessPoint: string =
+    connectionData.locationServiceData.accessMappings.find(
+      (mapping) =>
+        mapping.moniker ===
+        connectionData.locationServiceData.defaultAccessMappingMoniker,
+    ).accessPoint;
 
   pkgLocation.DefaultPackagingUri = defaultAccessPoint;
   pkgLocation.PackagingUris.push(defaultAccessPoint);
   pkgLocation.PackagingUris = pkgLocation.PackagingUris.concat(
-    connectionData.locationServiceData.accessMappings.map(mapping => {
+    connectionData.locationServiceData.accessMappings.map((mapping) => {
       return mapping.accessPoint;
-    })
+    }),
   );
 
   tl.debug("Acquired location");
@@ -162,7 +163,7 @@ function getAreaIdForProtocol(protocolType: ProtocolType): string {
 
 export function getWebApiWithProxy(
   serviceUri: string,
-  accessToken?: string
+  accessToken?: string,
 ): vsts.WebApi {
   if (!accessToken) {
     accessToken = getSystemAccessToken();
@@ -172,7 +173,7 @@ export function getWebApiWithProxy(
   const options: IRequestOptions = {
     proxy: tl.getHttpProxyConfiguration(serviceUri),
     allowRetries: true,
-    maxRetries: 5
+    maxRetries: 5,
   };
   return new vsts.WebApi(serviceUri, credentialHandler, options);
 }
@@ -189,7 +190,7 @@ export async function getFeedRegistryUrl(
   feedId: string,
   project: string,
   accessToken?: string,
-  useSession?: boolean
+  useSession?: boolean,
 ): Promise<string> {
   let loc: RegistryLocation;
   switch (registryType) {
@@ -197,28 +198,28 @@ export async function getFeedRegistryUrl(
       loc = {
         apiVersion: "3.0-preview.1",
         area: "npm",
-        locationId: "D9B75B07-F1D9-4A67-AAA6-A4D9E66B3352"
+        locationId: "D9B75B07-F1D9-4A67-AAA6-A4D9E66B3352",
       };
       break;
     case RegistryType.NuGetV2:
       loc = {
         apiVersion: "3.0-preview.1",
         area: "nuget",
-        locationId: "5D6FC3B3-EF78-4342-9B6E-B3799C866CFA"
+        locationId: "5D6FC3B3-EF78-4342-9B6E-B3799C866CFA",
       };
       break;
     case RegistryType.PyPiSimple:
       loc = {
         apiVersion: "5.0",
         area: "pypi",
-        locationId: "93377A2C-F5FB-48B9-A8DC-7781441CABF1"
+        locationId: "93377A2C-F5FB-48B9-A8DC-7781441CABF1",
       };
       break;
     case RegistryType.PyPiUpload:
       loc = {
         apiVersion: "5.0",
         area: "pypi",
-        locationId: "C7A75C1B-08AC-4B11-B468-6C7EF835C85E"
+        locationId: "C7A75C1B-08AC-4B11-B468-6C7EF835C85E",
       };
       break;
     default:
@@ -226,7 +227,7 @@ export async function getFeedRegistryUrl(
       loc = {
         apiVersion: "3.0-preview.1",
         area: "nuget",
-        locationId: "9D3A4E8E-2F8F-4AE1-ABC2-B461A51CB3B3"
+        locationId: "9D3A4E8E-2F8F-4AE1-ABC2-B461A51CB3B3",
       };
       break;
   }
@@ -243,7 +244,7 @@ export async function getFeedRegistryUrl(
       loc.area /* protocol */,
       vssConnection.serverUrl,
       [vssConnection.authHandler],
-      vssConnection.options
+      vssConnection.options,
     );
   }
 
@@ -251,7 +252,7 @@ export async function getFeedRegistryUrl(
     loc.apiVersion,
     loc.area,
     loc.locationId,
-    { feedId: sessionId, project: project }
+    { feedId: sessionId, project: project },
   );
 
   tl.debug("Feed registry url: " + data.requestUrl);
