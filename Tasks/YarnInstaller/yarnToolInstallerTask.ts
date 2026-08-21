@@ -1,28 +1,37 @@
-import fs = require("fs-extra");
+import * as fs from "fs-extra";
 import * as tl from "azure-pipelines-task-lib/task";
 import * as path from "path";
 import * as toolLib from "azure-pipelines-tool-lib/tool";
 import { downloadFile, getTempPath, detar } from "./util";
 
-let yarnVersionsFile = path.join(getTempPath(), "yarnVersions.json");
+interface YarnRelease {
+  uri: string;
+  isPrerelease: boolean;
+}
 
-async function queryLatestMatch(
+// Yarn 1.x (Classic) is end-of-life, so the set of releases is final and the
+// version index ships with the task rather than being fetched at run time.
+const yarnVersionsFile = path.join(__dirname, "tarballsV2.json");
+
+function readYarnVersions(): { [key: string]: YarnRelease } {
+  return JSON.parse(
+    fs.readFileSync(yarnVersionsFile, { encoding: "utf8" }),
+  ) as {
+    [key: string]: YarnRelease;
+  };
+}
+
+function queryLatestMatch(
   versionSpec: string,
-  includePrerelease: boolean
-): Promise<{ version: string; url: string }> {
-  await downloadFile(
-    "https://publicblobs.geeklearning.io/yarn/tarballsV2.json",
-    yarnVersionsFile
-  );
-  let yarnVersions = JSON.parse(
-    fs.readFileSync(yarnVersionsFile, { encoding: "utf8" })
-  ) as { [key: string]: { uri: string; isPrerelease: boolean } };
+  includePrerelease: boolean,
+): { version: string; url: string } {
+  const yarnVersions = readYarnVersions();
   let versionsCodes = Object.keys(yarnVersions);
   if (!includePrerelease) {
-    versionsCodes = versionsCodes.filter(v => !yarnVersions[v].isPrerelease);
+    versionsCodes = versionsCodes.filter((v) => !yarnVersions[v].isPrerelease);
   }
 
-  let version: string = toolLib.evaluateVersions(versionsCodes, versionSpec);
+  const version: string = toolLib.evaluateVersions(versionsCodes, versionSpec);
 
   if (!version) {
     return undefined;
@@ -35,15 +44,15 @@ async function downloadYarn(version: {
   version: string;
   url: string;
 }): Promise<string> {
-  let cleanVersion = toolLib.cleanVersion(version.version);
+  const cleanVersion = toolLib.cleanVersion(version.version);
 
-  let downloadPath: string = path.join(
+  const downloadPath: string = path.join(
     getTempPath(),
-    `yarn-${cleanVersion}.tar.gz`
+    `yarn-${cleanVersion}.tar.gz`,
   );
   await downloadFile(version.url, downloadPath);
 
-  let detarLocation = path.join(getTempPath(), "yarn-output");
+  const detarLocation = path.join(getTempPath(), "yarn-output");
   fs.emptyDirSync(detarLocation);
   await detar(downloadPath, detarLocation);
 
@@ -53,7 +62,7 @@ async function downloadYarn(version: {
 async function getYarn(
   versionSpec: string,
   checkLatest: boolean,
-  includePrerelease: boolean
+  includePrerelease: boolean,
 ): Promise<void> {
   if (toolLib.isExplicitVersion(versionSpec)) {
     checkLatest = false; // check latest doesn't make sense when explicit version
@@ -69,19 +78,20 @@ async function getYarn(
     let version: { version: string; url: string };
     if (toolLib.isExplicitVersion(versionSpec)) {
       // version to download
-      version = await queryLatestMatch(versionSpec, true);
+      version = queryLatestMatch(versionSpec, true);
     } else {
-      // query nodejs.org for a matching version
-      version = await queryLatestMatch(versionSpec, includePrerelease);
-      tl.debug("Matched version: " + version.version);
-
-      if (!version) {
-        throw new Error(`Unable to find Yarn version '${versionSpec}'.`);
-      }
-
-      // check cache
-      toolPath = toolLib.findLocalTool("yarn", version.version);
+      // find a matching version in the bundled index
+      version = queryLatestMatch(versionSpec, includePrerelease);
     }
+
+    if (!version) {
+      throw new Error(`Unable to find Yarn version '${versionSpec}'.`);
+    }
+
+    tl.debug("Matched version: " + version.version);
+
+    // check cache
+    toolPath = toolLib.findLocalTool("yarn", version.version);
 
     if (!toolPath) {
       tl.debug("Downloading tarball: " + version.url);
@@ -98,7 +108,7 @@ async function getYarn(
   // layouts could change by version, by platform etc... but that's the tool installers job
   //
 
-  let matches = tl.findMatch(toolPath, ["**/bin/yarn.cmd"]);
+  const matches = tl.findMatch(toolPath, ["**/bin/yarn.cmd"]);
 
   if (matches.length) {
     toolPath = path.dirname(matches[0]);
@@ -115,11 +125,11 @@ async function getYarn(
 
 async function run(): Promise<void> {
   try {
-    let versionSpec = tl.getInput("versionSpec", true);
-    let checkLatest: boolean = tl.getBoolInput("checkLatest", false);
-    let includePrerelease: boolean = tl.getBoolInput(
+    const versionSpec = tl.getInput("versionSpec", true);
+    const checkLatest: boolean = tl.getBoolInput("checkLatest", false);
+    const includePrerelease: boolean = tl.getBoolInput(
       "includePrerelease",
-      false
+      false,
     );
 
     await getYarn(versionSpec, checkLatest, includePrerelease);

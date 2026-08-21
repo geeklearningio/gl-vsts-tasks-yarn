@@ -35,7 +35,7 @@ export function saveFile(file: string): void {
 export function saveFileWithName(
   file: string,
   name: string,
-  filePath: string
+  filePath: string,
 ): void {
   if (file && tl.exist(file)) {
     const destination = path.join(filePath, name + ".npmrc");
@@ -61,7 +61,7 @@ export function restoreFile(file: string): void {
 export function restoreFileWithName(
   file: string,
   name: string,
-  filePath: string
+  filePath: string,
 ): void {
   if (file) {
     const source = path.join(filePath, name + ".npmrc");
@@ -74,7 +74,7 @@ export function restoreFileWithName(
 }
 
 export function toNerfDart(uri: string): string {
-  var parsed = url.parse(uri);
+  const parsed = url.parse(uri);
   delete parsed.protocol;
   delete parsed.auth;
   delete parsed.query;
@@ -84,10 +84,17 @@ export function toNerfDart(uri: string): string {
   return url.resolve(url.format(parsed), ".");
 }
 
-export function getProjectAndFeedIdFromInputParam(inputParam: string): any {
+export interface ProjectAndFeedId {
+  feedId: string;
+  projectId: string;
+}
+
+export function getProjectAndFeedIdFromInputParam(
+  inputParam: string,
+): ProjectAndFeedId {
   const feedProject = tl.getInput(inputParam);
-  var projectId = null;
-  var feedId = feedProject;
+  let projectId = null;
+  let feedId = feedProject;
   if (feedProject && feedProject.includes("/")) {
     const feedProjectParts = feedProject.split("/");
     projectId = feedProjectParts[0] || null;
@@ -96,6 +103,6 @@ export function getProjectAndFeedIdFromInputParam(inputParam: string): any {
 
   return {
     feedId: feedId,
-    projectId: projectId
+    projectId: projectId,
   };
 }

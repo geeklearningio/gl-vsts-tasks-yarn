@@ -2,24 +2,23 @@ import * as path from "path";
 import * as fs from "fs-extra";
 import * as tl from "azure-pipelines-task-lib/task";
 import * as tr from "azure-pipelines-task-lib/toolrunner";
-import * as q from "q";
 import * as npmutil from "./packaging/npm/npmutil";
 import * as util from "./packaging/util";
 import { INpmRegistry, NpmRegistry } from "./packaging/npm/npmregistry";
 import {
   PackagingLocation,
   getPackagingUris,
-  ProtocolType
+  ProtocolType,
 } from "./packaging/locationUtilities";
 
 import { RegistryLocation } from "./constants";
 
 tl.setResourcePath(path.join(__dirname, "task.json"));
 
-let yarnPath = tl.which("yarn");
-let args = tl.getInput("arguments");
-let projectPath = tl.getPathInput("projectDirectory") || process.cwd();
-let customRegistry = tl.getInput("customRegistry");
+const yarnPath = tl.which("yarn");
+const args = tl.getInput("arguments");
+const projectPath = tl.getPathInput("projectDirectory") || process.cwd();
+const customRegistry = tl.getInput("customRegistry");
 
 function projectNpmrc(): string {
   return path.join(projectPath, ".npmrc");
@@ -56,23 +55,23 @@ async function yarnExec(): Promise<void> {
       tl.debug("Unable to get packaging URIs, using default collection URI");
       tl.debug(JSON.stringify(error));
       const collectionUrl = tl.getVariable(
-        "System.TeamFoundationCollectionUri"
+        "System.TeamFoundationCollectionUri",
       );
       packagingLocation = {
         PackagingUris: [collectionUrl],
-        DefaultPackagingUri: collectionUrl
+        DefaultPackagingUri: collectionUrl,
       };
     }
 
     tl.debug(yarnPath);
 
-    let npmrc = npmutil.getTempNpmrcPath();
+    const npmrc = npmutil.getTempNpmrcPath();
     let npmRegistries: INpmRegistry[] = await npmutil.getLocalNpmRegistries(
       projectPath,
-      packagingLocation.PackagingUris
+      packagingLocation.PackagingUris,
     );
 
-    let registryLocation = customRegistry;
+    const registryLocation = customRegistry;
     const overrideNpmrc =
       registryLocation === RegistryLocation.Feed
         ? true
@@ -87,21 +86,21 @@ async function yarnExec(): Promise<void> {
     switch (registryLocation) {
       case RegistryLocation.Feed:
         tl.debug("Using internal feed");
-        let feedId = tl.getInput("customFeed", true);
+        const feedId = tl.getInput("customFeed", true);
         npmRegistries.push(
           await NpmRegistry.FromFeedId(
             packagingLocation.DefaultPackagingUri,
             feedId,
-            null
-          )
+            null,
+          ),
         );
         break;
       case RegistryLocation.Npmrc:
         tl.debug("Using registries in .npmrc");
-        let endpointIds = tl.getDelimitedInput("customEndpoint", ",");
+        const endpointIds = tl.getDelimitedInput("customEndpoint", ",");
         if (endpointIds && endpointIds.length > 0) {
-          const endpointRegistries = await q.all(
-            endpointIds.map(e => NpmRegistry.FromServiceEndpoint(e, true))
+          const endpointRegistries = await Promise.all(
+            endpointIds.map((e) => NpmRegistry.FromServiceEndpoint(e, true)),
           );
           npmRegistries = npmRegistries.concat(endpointRegistries);
         }
@@ -121,7 +120,7 @@ async function yarnExec(): Promise<void> {
       npmutil.appendToNpmrc(npmrc, `${registry.auth}\n`);
     }
 
-    let yarn = tl.tool("yarn");
+    const yarn = tl.tool("yarn");
 
     if (tl.getBoolInput("ProductionMode")) {
       yarn.arg("--production");
@@ -129,7 +128,7 @@ async function yarnExec(): Promise<void> {
 
     yarn.line(args);
 
-    let options: tr.IExecOptions = {
+    const options: tr.IExecOptions = {
       cwd: projectPath,
       env: process.env,
       silent: false,
@@ -137,13 +136,13 @@ async function yarnExec(): Promise<void> {
       ignoreReturnCode: false,
       outStream: undefined,
       errStream: undefined,
-      windowsVerbatimArguments: undefined
+      windowsVerbatimArguments: undefined,
     };
 
     saveProjectNpmrc(overrideNpmrc);
     fs.copySync(npmrc, projectNpmrc());
 
-    let result = await yarn.exec(options);
+    const result = await yarn.exec(options);
 
     if (overrideNpmrc) {
       tl.rmRF(projectNpmrc());
@@ -156,7 +155,7 @@ async function yarnExec(): Promise<void> {
     if (result) {
       tl.setResult(
         tl.TaskResult.Failed,
-        `Yarn failed with exit code ${result}`
+        `Yarn failed with exit code ${result}`,
       );
     } else {
       tl.setResult(tl.TaskResult.Succeeded, "Yarn executed successfully");

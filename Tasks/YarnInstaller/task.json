@@ -2,8 +2,8 @@
   "id": "57066373-3f34-492b-941a-d66dd6b079c4",
   "name": "YarnInstaller",
   "friendlyName": "Yarn Tool Installer",
-  "description": "Installs a version of Yarn",
-  "helpMarkDown": "[More Information](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn) (Version #{Version}#)",
+  "description": "[DEPRECATED - unmaintained] Installs a version of Yarn 1.x (Classic)",
+  "helpMarkDown": "**⚠️ Deprecated and unmaintained.** This extension receives no further updates. Yarn 1.x is already available in the standard hosted agent images, and Yarn 2 and later can be enabled with `corepack enable`. For feed authentication use the built-in npm authenticate task. [Migration notes](https://github.com/geeklearningio/gl-vsts-tasks-yarn#migrating-off-this-extension).\n\n[More Information](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn) (Version #{Version}#)",
   "category": "Utility",
   "visibility": ["Build", "Release"],
   "author": "Geek Learning",
@@ -12,7 +12,7 @@
     "Minor": 0,
     "Patch": 0
   },
-  "minimumAgentVersion": "2.117.0",
+  "minimumAgentVersion": "3.232.1",
   "groups": [],
   "satisfies": ["yarn"],
   "instanceNameFormat": "Use Yarn $(versionSpec)",
@@ -43,14 +43,6 @@
     }
   ],
   "execution": {
-    "Node": {
-      "target": "yarnToolInstallerTask.js",
-      "argumentFormat": ""
-    },
-    "Node10": {
-      "target": "yarnToolInstallerTask.js",
-      "argumentFormat": ""
-    },
     "Node20_1": {
       "target": "yarnToolInstallerTask.js",
       "argumentFormat": ""

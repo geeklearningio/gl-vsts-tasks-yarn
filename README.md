@@ -2,6 +2,73 @@
 
 # Yarn Build and Release Tasks
 
+> ## ⚠️ Deprecated and unmaintained
+>
+> This extension is **no longer maintained**. No further releases, bug fixes or security
+> updates will be published, and [Yarn 1.x (Classic)](https://classic.yarnpkg.com/) is itself
+> end-of-life.
+>
+> **You almost certainly don't need it** — see *Migrating off this extension* below.
+> The repository is left as-is for anyone who still depends on it. Feel free to fork.
+
+## Migrating off this extension
+
+Yarn 1.x is already available in the standard hosted agent images, and Yarn 2 and later can be
+enabled directly through [Corepack](https://nodejs.org/api/corepack.html). Between the two,
+none of this needs an extension any more.
+
+The following does everything this extension did, with nothing installed:
+
+```yaml
+variables:
+  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn-cache
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: "20.x"
+
+  - task: Bash@3
+    displayName: Yarn enable
+    inputs:
+      targetType: "inline"
+      script: |
+        corepack enable
+        corepack prepare yarn@stable --activate
+
+  - task: Cache@2
+    displayName: Cache Yarn packages
+    inputs:
+      key: '"yarn" | "$(Agent.OS)" | yarn.lock'
+      restoreKeys: |
+        yarn | "$(Agent.OS)"
+        yarn
+      path: $(YARN_CACHE_FOLDER)
+
+  - task: Bash@3
+    displayName: Yarn
+    inputs:
+      targetType: "inline"
+      script: |
+        yarn --immutable
+
+  - task: Bash@3
+    displayName: Yarn build
+    inputs:
+      targetType: "inline"
+      script: |
+        yarn build
+```
+
+If your project pins its Yarn version with the `packageManager` field in `package.json`, then
+`corepack enable` on its own is enough and the `corepack prepare` line can be dropped. On Yarn
+1.x, use `yarn --frozen-lockfile` in place of `yarn --immutable`.
+
+If package feed authentication is needed — the one thing the **Yarn** task did beyond running
+Yarn — the built-in
+[npm authenticate](https://learn.microsoft.com/azure/devops/pipelines/tasks/reference/npm-authenticate-v0)
+task does the job.
+
 ![cistatus](https://geeklearning.visualstudio.com/_apis/public/build/definitions/f841b266-7595-4d01-9ee1-4864cf65aa73/77/badge)
 
 [Yarn](https://yarnpkg.com/) is Facebook's npm alternative. It is the fast, reliable and secure dependency management. 
@@ -21,10 +88,12 @@ Why so much sudden love for Yarn ? You can find out [here](http://geeklearning.i
 
 ## To contribute
 
-1. Globally install typescript and tfx-cli (to package VSTS extensions): `npm install -g typescript tfx-cli`
-2. From the root of the repo run `npm install`. This will pull down the necessary modules for the different tasks and for the build tools.
-3. Run `npm run build` to compile the build tasks.
-4. Run `npm run package -- --version <version>` to create the .vsix extension packages (supports multiple environments) that includes the build tasks.
+Requires Node.js 20 or later. `typescript` and `tfx-cli` are resolved from the repo's own
+dependencies, so no global installs are needed.
+
+1. From the root of the repo run `npm install`. This will pull down the necessary modules for the different tasks and for the build tools.
+2. Run `npm run build` to compile the build tasks.
+3. Run `npm run package -- --version <version>` to create the .vsix extension packages (supports multiple environments) that includes the build tasks.
 
 ## Known Issues
 

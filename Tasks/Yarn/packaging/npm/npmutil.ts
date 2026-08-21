@@ -9,14 +9,12 @@ import { INpmRegistry, NpmRegistry } from "./npmregistry";
 import * as NpmrcParser from "./npmrcparser";
 
 export function appendToNpmrc(npmrc: string, data: string): void {
-  tl.writeFile(npmrc, data, {
-    flag: "a"
-  } as tl.FsOptions);
+  tl.writeFile(npmrc, data, { flag: "a" });
 }
 
 export async function getLocalRegistries(
   packagingUrls: string[],
-  npmrc: string
+  npmrc: string,
 ): Promise<string[]> {
   const collectionHosts = packagingUrls.map((pkgUrl: string) => {
     const parsedUrl = url.parse(pkgUrl);
@@ -28,10 +26,10 @@ export async function getLocalRegistries(
 
   const registries = NpmrcParser.GetRegistries(
     npmrc,
-    /* saveNormalizedRegistries */ true
+    /* saveNormalizedRegistries */ true,
   );
 
-  const localRegistries = registries.filter(registry => {
+  const localRegistries = registries.filter((registry) => {
     const registryHost = url.parse(registry).host;
     return collectionHosts.indexOf(registryHost.toLowerCase()) >= 0;
   });
@@ -40,7 +38,7 @@ export async function getLocalRegistries(
   return localRegistries;
 }
 
-export function getFeedIdFromRegistry(registry: string) {
+export function getFeedIdFromRegistry(registry: string): string {
   const registryUrl = url.parse(registry);
   const registryPathname = registryUrl.pathname.toLowerCase();
   const startingToken = "/_packaging/";
@@ -49,7 +47,7 @@ export function getFeedIdFromRegistry(registry: string) {
 
   return registryUrl.pathname.substring(
     startingIndex + startingToken.length,
-    endingIndex
+    endingIndex,
   );
 }
 
@@ -57,7 +55,7 @@ export function getAllNpmRegistries(npmrcPath: string): string[] {
   if (tl.exist(npmrcPath)) {
     return NpmrcParser.GetRegistries(
       npmrcPath,
-      /* saveNormalizedRegistries */ false
+      /* saveNormalizedRegistries */ false,
     );
   }
 
@@ -66,13 +64,15 @@ export function getAllNpmRegistries(npmrcPath: string): string[] {
 
 export async function getLocalNpmRegistries(
   workingDir: string,
-  packagingUrls: string[]
+  packagingUrls: string[],
 ): Promise<INpmRegistry[]> {
   const npmrcPath = path.join(workingDir, ".npmrc");
 
   if (tl.exist(npmrcPath)) {
     const localRegistries = await getLocalRegistries(packagingUrls, npmrcPath);
-    return localRegistries.map(registry => NpmRegistry.FromUrl(registry, true));
+    return localRegistries.map((registry) =>
+      NpmRegistry.FromUrl(registry, true),
+    );
   }
 
   return [];
@@ -83,7 +83,7 @@ export function getTempNpmrcPath(): string {
     tl.getVariable("Build.BuildId") || tl.getVariable("Release.ReleaseId");
   const tempUserNpmrcPath: string = path.join(
     util.getTempPath(),
-    `${id}.npmrc`
+    `${id}.npmrc`,
   );
 
   return tempUserNpmrcPath;

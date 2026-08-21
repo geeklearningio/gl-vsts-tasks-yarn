@@ -1,0 +1,7 @@
+node_modules/
+.BuildOutput/
+# tsc emits alongside the sources
+Tasks/**/*.js
+Tasks/**/*.d.ts
+Tests/**/*.js
+Tests/**/*.d.ts

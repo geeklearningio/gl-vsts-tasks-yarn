@@ -1,3 +1,5 @@
+> **⚠️ This project is deprecated and unmaintained.** Issues and pull requests are no longer being acted on. See [Migrating off this extension](https://github.com/geeklearningio/gl-vsts-tasks-yarn#migrating-off-this-extension).
+
 Before opening an issue please [read this](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/How-to-Report-an-issue).
 
 # Are you reporting a bug or a feature request ?
