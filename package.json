@@ -2,15 +2,16 @@
   "name": "gl-vsts-tasks-yarn",
   "version": "0.1.0",
   "description": "Yarn task for the Team Services build system (deprecated and unmaintained)",
+  "workspaces": [
+    "Tasks/*"
+  ],
   "directories": {
     "doc": "docs"
   },
   "scripts": {
     "clean": "node node_modules/gl-vsts-tasks-build-scripts/dist/clean.js",
-    "postinstall": "node node_modules/gl-vsts-tasks-build-scripts/dist/install.js",
     "prepare": "husky || true",
-    "prebuild": "node node_modules/gl-vsts-tasks-build-scripts/dist/prebuild.js",
-    "build": "tsc",
+    "build": "node node_modules/gl-vsts-tasks-build-scripts/dist/prebuild.js && tsc",
     "package": "node node_modules/gl-vsts-tasks-build-scripts/dist/package.js",
     "test": "run-s build test:no-build",
     "test:no-build": "node test.js",
@@ -31,6 +32,7 @@
   ],
   "author": "Geek Learning, Adrien Siffermann, Cyprien Autexier",
   "license": "MIT",
+  "packageManager": "yarn@4.18.0",
   "bugs": {
     "url": "https://github.com/geeklearningio/gl-vsts-tasks-yarn/issues"
   },
@@ -51,8 +53,8 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^3.9.6",
     "pretty-quick": "^4.2.2",
+    "tfx-cli": "^0.23.4",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.67.0"
-  },
-  "dependencies": {}
+  }
 }

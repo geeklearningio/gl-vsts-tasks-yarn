@@ -8,7 +8,7 @@
 > updates will be published, and [Yarn 1.x (Classic)](https://classic.yarnpkg.com/) is itself
 > end-of-life.
 >
-> **You almost certainly don't need it** — see *Migrating off this extension* below.
+> **You almost certainly don't need it** — see _Migrating off this extension_ below.
 > The repository is left as-is for anyone who still depends on it. Feel free to fork.
 
 ## Migrating off this extension
@@ -71,29 +71,36 @@ task does the job.
 
 ![cistatus](https://geeklearning.visualstudio.com/_apis/public/build/definitions/f841b266-7595-4d01-9ee1-4864cf65aa73/77/badge)
 
-[Yarn](https://yarnpkg.com/) is Facebook's npm alternative. It is the fast, reliable and secure dependency management. 
+[Yarn](https://yarnpkg.com/) is Facebook's npm alternative. It is the fast, reliable and secure dependency management.
 This extension brings the power of Yarn to Visual Studio Team Services Build and Release Management. It enables using yarn with the official npm registry or any registry you like such as Myget or [Visual Studio Team Services Package Management](https://marketplace.visualstudio.com/items?itemName=ms.feed#).
 
 ![GeekLearning Loves Yarn](https://github.com/geeklearningio/gl-vsts-tasks-yarn/blob/master/Extension/Screenshots/GeekLearningLovesYarn.png)
 
-Why so much sudden love for Yarn ? You can find out [here](http://geeklearning.io/npm-install-drives-you-crazy-yarn-and-chill) 
-
+Why so much sudden love for Yarn ? You can find out [here](http://geeklearning.io/npm-install-drives-you-crazy-yarn-and-chill)
 
 [Learn more](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki) about this extension on the wiki!
 
 ## Tasks included
 
-* **[Yarn installer](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn-Installer)**: Installs Yarn 
-* **[Yarn](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn)**: Execute Yarn
+- **[Yarn installer](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn-Installer)**: Installs Yarn
+- **[Yarn](https://github.com/geeklearningio/gl-vsts-tasks-yarn/wiki/Yarn)**: Execute Yarn
 
 ## To contribute
 
-Requires Node.js 20 or later. `typescript` and `tfx-cli` are resolved from the repo's own
-dependencies, so no global installs are needed.
+This repo uses Yarn 4 through [Corepack](https://nodejs.org/api/corepack.html), pinned by the
+`packageManager` field in `package.json` — run `corepack enable` once and `yarn` resolves to the
+right version by itself. Node.js 20 or later is required; `.nvmrc` pins the version used for
+development. `typescript` and `tfx-cli` come from the repo's own dependencies, so nothing needs
+installing globally.
 
-1. From the root of the repo run `npm install`. This will pull down the necessary modules for the different tasks and for the build tools.
-2. Run `npm run build` to compile the build tasks.
-3. Run `npm run package -- --version <version>` to create the .vsix extension packages (supports multiple environments) that includes the build tasks.
+1. From the root of the repo run `yarn`. The two tasks are Yarn workspaces, so this installs their dependencies as well.
+2. Run `yarn build` to compile the build tasks.
+3. Run `yarn package --version <version>` to create the .vsix extension packages (supports multiple environments) that includes the build tasks.
+
+> `.yarnrc.yml` sets `nmHoistingLimits: workspaces`. Each task folder is copied into the .vsix
+> with its own `node_modules` and is run by the agent as a standalone script, so that setting is
+> load-bearing — without it the dependencies hoist to the repo root and the packaged extension
+> ships without them.
 
 ## Known Issues
 
@@ -110,4 +117,4 @@ It also uses some foundation code from [Azure pipelines Tasks](https://github.co
 
 ## Attributions
 
-* [Yarn by Yarn](https://yarnpkg.com/)
+- [Yarn by Yarn](https://yarnpkg.com/)
